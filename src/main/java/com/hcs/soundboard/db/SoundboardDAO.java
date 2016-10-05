@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Component
 public class SoundboardDAO {
@@ -50,14 +51,27 @@ public class SoundboardDAO {
     }
 
     @Transactional
-    public int addSoundToBoard(InputStream sound, long size, String name, int boardId) {
-        jdbcTemplate.update("insert into sound (sound, size) VALUE (?, ?)",
-                sound, size);
-        int soundId = jdbcTemplate.queryForObject("select last_insert_id()", Integer.class);
-        jdbcTemplate.update("insert into board_x_sound (boardId, soundId, soundName, public) " +
+    public List<Integer> addSoundsToBoard(List<SoundFile> sounds, List<String> names, int boardId) {
+        List<Object[]> soundArgs = sounds.stream()
+                .map(s -> new Object[] {s.getSound(), s.getSize()})
+                .collect(Collectors.toList());
+
+        jdbcTemplate.batchUpdate("insert into sound (sound, size) VALUE (?, ?)",
+                soundArgs);
+
+        List<Integer> soundIds = jdbcTemplate.queryForList(
+                "select id from (select id from sound order by id desc limit ?) ids order by id asc",
+                new Object[] {sounds.size()},
+                Integer.class);
+
+        List<Object[]> boardXSoundArgs = IntStream.range(0, soundIds.size())
+                .mapToObj(i -> new Object[] {boardId, soundIds.get(i), names.get(i)})
+                .collect(Collectors.toList());
+
+        jdbcTemplate.batchUpdate("insert into board_x_sound (boardId, soundId, soundName, public) " +
                         "VALUE (?, ?, ?, false)",
-                boardId, soundId, name);
-        return soundId;
+                boardXSoundArgs);
+        return soundIds;
     }
 
     @Transactional

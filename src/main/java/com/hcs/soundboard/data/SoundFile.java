@@ -10,5 +10,5 @@ import java.io.InputStream;
 public class SoundFile {
     private int id;
     private InputStream sound;
-    private int size;
+    private long size;
 }

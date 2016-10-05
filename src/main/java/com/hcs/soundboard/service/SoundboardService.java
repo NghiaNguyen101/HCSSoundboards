@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @Service
@@ -41,10 +40,10 @@ public class SoundboardService {
         return soundboardDao.getUsersBoards(user.getUsername());
     }
 
-    public int addSoundToBoard(HCSUser user, InputStream sound, long size, String name, int boardId) {
+    public List<Integer> addSoundsToBoard(HCSUser user, List<SoundFile> sounds, List<String> names, int boardId) {
         Board board = soundboardDao.getBoard(boardId, false);
         if (canEditBoard(user, board)) {
-            return soundboardDao.addSoundToBoard(sound, size, name, boardId);
+            return soundboardDao.addSoundsToBoard(sounds, names, boardId);
         }
         throw new ForbiddenException();
     }

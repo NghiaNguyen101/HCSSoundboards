@@ -1,7 +1,6 @@
 package com.hcs.soundboard.controller;
 
 import com.hcs.soundboard.data.SoundFile;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class SoundboardController extends BaseController {
@@ -62,13 +64,25 @@ public class SoundboardController extends BaseController {
 
     @RequestMapping(value = "/board/{boardId:.+}/upload", method = RequestMethod.POST)
     public String upload(@PathVariable int boardId,
-                      @RequestParam MultipartFile sound,
-                      @RequestParam(required = false) String name) throws IOException {
-        if (StringUtils.isEmpty(name)) {
-            String filename = sound.getOriginalFilename();
-            name = filename.substring(0, filename.lastIndexOf("."));
-        }
-        soundboardService.addSoundToBoard(getUser(),sound.getInputStream(), sound.getSize(), name, boardId);
+                      @RequestParam List<MultipartFile> sounds) throws IOException {
+        List<SoundFile> soundFiles = sounds.stream()
+                .map(s -> new SoundFile(0, getInputStream(s), s.getSize()))
+                .collect(Collectors.toList());
+
+        List<String> names = sounds.stream().map(s -> {
+            String filename = s.getOriginalFilename();
+            return filename.substring(0, filename.lastIndexOf("."));
+        }).collect(Collectors.toList());
+
+        soundboardService.addSoundsToBoard(getUser(), soundFiles, names, boardId);
         return String.format("redirect:/board/%d/edit", boardId);
+    }
+
+    private InputStream getInputStream(MultipartFile file) {
+        try {
+            return file.getInputStream();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
