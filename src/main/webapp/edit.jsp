@@ -15,8 +15,8 @@
     </div>
     <div>
         <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/upload">
-            <input class="btn" type="file" accept="audio/*" capture="microphone" name="sound"/>
-            <input type="text" name="name" title="Name"/>
+            <input class="btn" type="file" accept="audio/*" capture="microphone" name="sound" required="required" />
+            <input type="text" name="name" title="Name" required="required"/>
             <input class="btn" type="submit"/>
         </hcs:form>
     </div>
