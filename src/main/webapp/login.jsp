@@ -10,8 +10,8 @@
             Invalid username or password.
         </c:if>
         <hcs:form action="/login" method="post">
-            <div><label> User Name : <input type="text" name="username"/> </label></div>
-            <div><label> Password: <input type="password" name="password"/> </label></div>
+            <div><label> User Name : <input type="text" name="username" required="required"/> </label></div>
+            <div><label> Password: <input type="password" name="password" required="required"/> </label></div>
             <div><input type="submit" value="Sign In"/></div>
         </hcs:form>
     </div>

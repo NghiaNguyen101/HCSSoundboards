@@ -7,8 +7,8 @@
             Sorry, that username is already taken
         </c:if>
         <hcs:form action="/register" method="post">
-            <div><label>Username:<input type="text" name="username"/></label></div>
-            <div><label>Password:<input type="password" name="password"/> </label></div>
+            <div><label>Username:<input type="text" name="username" required="required"/></label></div>
+            <div><label>Password:<input type="password" name="password" required="required"/> </label></div>
             <div><input type="submit" value="Sign Up" class="btn"/></div>
         </hcs:form>
     </div>
