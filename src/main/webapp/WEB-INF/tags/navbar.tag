@@ -1,6 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="hcs" tagdir="/WEB-INF/tags" %>
 <%@ attribute name="page" type="java.lang.String" required="false" %>
+
+<%@ include file="/includes.jsp" %>
 
 <nav class="navbar navbar-default navbar-static-top">
     <div class="container main">
@@ -17,7 +17,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li class="${page == 'home' ? 'active' : ''}"><a href="/">Home</a></li>
-                <li class="${page == 'sounds' ? 'active' : ''}"><a href="/sounds">Sounds</a></li>
+                <li class="${page == 'your-boards' ? 'active' : ''}"><a href="/your-boards">Your Boards</a></li>
                 <li class="${page == 'create' ? 'active' : ''}"><a href="/create">Create</a></li>
             </ul>
             <hcs:form name="logout" action="/logout" method="post">

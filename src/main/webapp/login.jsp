@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="includes.jsp" %>
+<%@ include file="/includes.jsp" %>
 
 <hcs:standard-page title="Sign in" page="login">
     <div class="jumbotron">

@@ -1,8 +1,8 @@
 <%@ attribute name="title" type="java.lang.String" required="true" %>
 <%@ attribute name="page" type="java.lang.String" required="false" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="hcs" tagdir="/WEB-INF/tags" %>
+<%@ include file="/includes.jsp" %>
+
 <!DOCTYPE html>
 
 <html lang="en">

@@ -1,5 +1,6 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ tag dynamic-attributes="dynattrs" %>
+
+<%@ include file="/includes.jsp" %>
 
 <form
 <c:forEach items="${dynattrs}" var="a">

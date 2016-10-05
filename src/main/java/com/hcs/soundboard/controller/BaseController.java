@@ -1,14 +1,14 @@
 package com.hcs.soundboard.controller;
 
 import com.hcs.soundboard.data.HCSUser;
-import com.hcs.soundboard.db.DataAccessObject;
 import com.hcs.soundboard.service.SecurityService;
+import com.hcs.soundboard.service.SoundboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 public class BaseController {
     @Autowired
-    protected DataAccessObject dao;
+    protected SoundboardService soundboardService;
 
     @Autowired
     protected SecurityService securityService;

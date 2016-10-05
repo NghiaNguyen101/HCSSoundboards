@@ -7,9 +7,8 @@ import java.io.InputStream;
 
 @Data
 @AllArgsConstructor
-public class Sound {
+public class SoundFile {
     private int id;
-    private String name;
     private InputStream sound;
     private int size;
 }
