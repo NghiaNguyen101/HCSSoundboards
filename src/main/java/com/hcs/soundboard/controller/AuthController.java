@@ -1,28 +1,42 @@
 package com.hcs.soundboard.controller;
 
-import com.hcs.soundboard.service.SecurityService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * This class handles requests for authentication-related URLs.
+ */
 @Controller
 public class AuthController extends BaseController {
-    @Autowired
-    private SecurityService securityService;
-
+    /**
+     * Handles requests for the sign-in page
+     * @return "login"
+     */
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String auth() {
         return "login";
     }
 
+    /**
+     * Handles requests for the sign-up page.
+     * @return "register"
+     */
     @RequestMapping(value = "/register", method = RequestMethod.GET)
     public String getRegister() {
         return "register";
     }
 
-    @RequestMapping(value = "register", method = RequestMethod.POST)
+    /**
+     * This URL is hit when the user submits the sign-up form. It signs the
+     * user up, logs them in, and then redirects them to the home page.
+     *
+     * @param username The username the user typed in when registering.
+     * @param password The password the user typed in when registering.
+     * @return A redirect to the home page.
+     */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String postRegister(@RequestParam String username, @RequestParam String password) {
         if (username.isEmpty() || password.isEmpty()) {
             throw new IllegalArgumentException("Nonempty username and password");

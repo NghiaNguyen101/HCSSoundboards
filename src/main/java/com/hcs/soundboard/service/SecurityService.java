@@ -17,6 +17,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * This handles user account-related stuff.
+ */
 @Service
 public class SecurityService {
     @Autowired
@@ -30,6 +33,10 @@ public class SecurityService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    /**
+     * Gets the current user.
+     * @return Current user.
+     */
     public HCSUser getUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 
@@ -47,6 +54,12 @@ public class SecurityService {
         return new HCSUser(isAnonymous, isMember, isAdmin, username);
     }
 
+    /**
+     * Logs the user in. Spring handles this when /login is hit, so this is just
+     * for automatically logging the user in when they sign up/.
+     * @param username User's username
+     * @param password Unhashed password
+     */
     public void autoLogin(String username, String password) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
@@ -59,6 +72,12 @@ public class SecurityService {
         }
     }
 
+    /**
+     * Attempts to register a user with the given username and password.
+     * @param username The new user's username
+     * @param password The new user's password. It is hashed before being
+     *                 stored in the DB.
+     */
     public void registerUser(String username, String password) {
         String hashedPassword = encoder.encode(password);
         accountDao.registerUser(username, hashedPassword);

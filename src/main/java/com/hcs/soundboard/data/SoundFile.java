@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.io.InputStream;
 
+/**
+ * Holds the actual sound clip.
+ */
 @Data
 @AllArgsConstructor
 public class SoundFile {

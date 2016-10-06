@@ -8,6 +8,9 @@ import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 
 import javax.sql.DataSource;
 
+/**
+ * This class configures the information needed for Spring to be able to handle user authentication.
+ */
 @Configuration
 public class AuthenticationProviderConfig {
     @Autowired

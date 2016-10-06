@@ -5,6 +5,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
 
+/**
+ * The main class. Probably won't need to edit this.
+ */
 @SpringBootApplication()
 public class WebApplication extends SpringBootServletInitializer {
     @Override
