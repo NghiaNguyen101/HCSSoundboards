@@ -63,15 +63,24 @@ public class SoundboardController extends BaseController {
     }
 
     /**
-     * This is called when the user hits Create in the navbar. It adds a new
-     * board entry to the database. We'll probably want to change this so the
-     * board isn't actually created until the user tries to add something to it.
+     * The page to create a new soundboard
+     * @return "create"
+     */
+    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    public String createBoard() {
+        return "create";
+    }
+
+    /**
+     * Handles requests to create a soundboard with a title and description.
      *
+     * @param title The title the user is giving the soundboard
+     * @param description then description the user is giving the soundboard
      * @return A redirect to the edit page.
      */
-    @RequestMapping("/create")
-    public String newBoard() {
-        int newBoardId = soundboardService.createSoundboard(getUser());
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public String newBoard(@RequestParam String title, @RequestParam String description) {
+        int newBoardId = soundboardService.createSoundboard(getUser(), title, description);
         return String.format("redirect:/board/%d/edit", newBoardId);
     }
 

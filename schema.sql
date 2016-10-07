@@ -31,7 +31,7 @@ CREATE TABLE sound
 CREATE TABLE board
 (
   id int primary key AUTO_INCREMENT,
-  name VARCHAR(100) not null,
+  title VARCHAR(100) not null,
   description varchar(1000) not null,
   ownerId int not null,
   public boolean not null,

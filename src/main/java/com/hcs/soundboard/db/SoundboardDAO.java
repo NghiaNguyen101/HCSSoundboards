@@ -109,13 +109,15 @@ public class SoundboardDAO {
     /**
      * Creates a new board record with the given owner
      * @param owner The username of the user who is creating the board.
+     * @param title The title of the new soundboard
+     * @param description The user's description of the soundboard
      * @return The id of the new board.
      */
     @Transactional
-    public int createSoundboard(String owner) {
+    public int createSoundboard(String owner, String title, String description) {
         jdbcTemplate.update("insert into board (name, description, ownerId, public, createDate) " +
                         "VALUE (?, ?, (select id from user where username=?), false, now())",
-                "Untitled Soundboard", owner + "'s soundboard", owner);
+                title, description, owner);
         return jdbcTemplate.queryForObject("select last_insert_id()", Integer.class);
     }
 

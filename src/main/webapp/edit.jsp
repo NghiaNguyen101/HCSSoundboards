@@ -5,7 +5,7 @@
 
 <hcs:standard-page title="Edit Soundboard" page="create">
     <div class="jumbotron">
-        <h1><c:out value="${board.boardName}"/></h1>
+        <h1><c:out value="${board.title}"/></h1>
         <p class="lead"><c:out value="${board.description}"/></p>
     </div>
     <div id="buttons">

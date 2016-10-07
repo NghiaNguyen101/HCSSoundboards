@@ -5,7 +5,7 @@
     <%--@elvariable id="boards" type="java.util.List<com.hcs.soundboard.data.Board>"--%>
     <c:forEach var="board" items="${boards}">
         <div>
-            <p><a href="/board/${board.id}"><b><c:out value="${board.boardName}"/></b></a></p>
+            <p><a href="/board/${board.id}"><b><c:out value="${board.title}"/></b></a></p>
             <p><c:out value="${board.description}"/></p>
             <p>${board.isPublic() ? 'Public' : 'Private'}</p>
             <p><a href="/board/${board.id}/edit">Edit</a></p>

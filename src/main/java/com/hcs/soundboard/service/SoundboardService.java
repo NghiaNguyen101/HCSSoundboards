@@ -92,9 +92,9 @@ public class SoundboardService {
      * @param user The user creating the soundboard.
      * @return The id of the new board.
      */
-    public int createSoundboard(HCSUser user) {
+    public int createSoundboard(HCSUser user, String title, String description) {
         if (!user.isAnonymous()) {
-            return soundboardDao.createSoundboard(user.getUsername());
+            return soundboardDao.createSoundboard(user.getUsername(), title, description);
         }
         throw new ForbiddenException();
     }

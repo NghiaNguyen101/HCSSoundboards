@@ -14,7 +14,7 @@ public class Board {
     private int id;
     private List<SoundMetadata> sounds;
     private String ownerName; // The username of the user who created this board.
-    private String boardName; // The name of the soundboard
+    private String title; // The title of the soundboard
     private String description; // The description of the soundboard
     private boolean isPublic; // Whether or not the soundboard is publicly viewable yet.
     private Date createDate; // The date and time the board was created.
