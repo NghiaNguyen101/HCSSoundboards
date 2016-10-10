@@ -49,13 +49,13 @@ public class SoundboardDAO {
     @Transactional
     public Board getBoard(int boardId, boolean getSounds) {
         return jdbcTemplate.queryForObject(
-                "select name, description, username, public, createDate " +
+                "select title, description, username, public, createDate " +
                         "from board join user on board.ownerId = user.id where board.id = ?",
                 new Object[] {boardId},
                 (rs, rn) -> new Board(boardId,
                         getSounds ? getAllSoundsForBoard(boardId) : null,
                         rs.getString("username"),
-                        rs.getString("name"),
+                        rs.getString("title"),
                         rs.getString("description"),
                         rs.getBoolean("public"),
                         rs.getDate("createDate")));
@@ -115,7 +115,7 @@ public class SoundboardDAO {
      */
     @Transactional
     public int createSoundboard(String owner, String title, String description) {
-        jdbcTemplate.update("insert into board (name, description, ownerId, public, createDate) " +
+        jdbcTemplate.update("insert into board (title, description, ownerId, public, createDate) " +
                         "VALUE (?, ?, (select id from user where username=?), false, now())",
                 title, description, owner);
         return jdbcTemplate.queryForObject("select last_insert_id()", Integer.class);
@@ -131,13 +131,13 @@ public class SoundboardDAO {
     public List<Board> getUsersBoards(String username) {
         // TODO Order the boards by createDate or something.
         return jdbcTemplate.query(
-                "select board.id, name, description, username, public, createDate " +
+                "select board.id, title, description, username, public, createDate " +
                         "from board join user on board.ownerId = user.id where user.username = ?",
                 new Object[] {username},
                 (rs, rn) -> new Board(rs.getInt("board.id"),
                         null,
                         rs.getString("username"),
-                        rs.getString("name"),
+                        rs.getString("title"),
                         rs.getString("description"),
                         rs.getBoolean("public"),
                         rs.getDate("createDate")));
