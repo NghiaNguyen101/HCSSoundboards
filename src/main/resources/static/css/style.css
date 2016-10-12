@@ -20,6 +20,14 @@ body #buttons button {
     margin-bottom: 5px;
     margin-right: 5px;
 }
+/*
+.btn-primary {
+    background-color: mediumvioletred;
+}*/
+body #createButton {
+    width: 300px;
+    justify-content: center;
+}
 
 body .jumbotron {
     text-align: center;
@@ -39,6 +47,54 @@ body .footer {
     border-top: 1px solid #eee;
 }
 
-.navbar-static-top {
-    margin-bottom: 19px;
+.divider-vertical {
+    height: 50px;
+    margin: 0 9px;
+    border-left: 1px;
+    border-right: 1px;
 }
+
+#fineprint {
+    font-size: 90%;
+}
+
+input[type=submit] {
+    background: url(https://s19.postimg.org/lc46pa8kj/Sign_In.png);
+    border: 0;
+    display: block;
+    height: 42px;
+    width: 113px;
+}
+
+#login label {
+    justify-content: center;
+    align-content: center;
+    vertical-align: middle;
+    text-align: center;
+}
+
+#logo {
+    max-height: 300px;
+    max-width: 250px;
+}
+
+.navbar-brand {
+    vertical-align: middle;
+    padding-top: 8px;
+}
+.navbar .nav .divider-vertical {
+    width: 1px;
+   /* height: 37px;*/
+    background-color: darkblue;
+    /*background-image: url("img/nav-div.jpg");*/
+}
+
+.navbar-static-top {
+    margin-bottom: 8px;
+}
+
+/*.navbar-default {
+    padding: 0 8x;
+    height: 40px;
+    line height: 40px;
+}*/

@@ -10,12 +10,12 @@
             Invalid username or password.
         </c:if>
         <hcs:form action="/login" method="post">
-            <div><label> User Name : <input type="text" name="username" required="required"/> </label></div>
-            <div><label> Password: <input type="password" name="password" required="required"/> </label></div>
-            <div><input type="submit" value="Sign In"/></div>
+            <div><label> User Name  &nbsp;&nbsp;&nbsp;<input type="text" name="username" required="required"/> </label></div>
+            <div><label> Password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="password" required="required"/> </label></div>
+            <div><input type="submit" value=""/></div>
         </hcs:form>
     </div>
     <div>
-        Don't have an account yet? <a href="/register">Sign up</a> now!
+        <p id="fineprint">Don't have an account yet? <a href="/register">Sign up</a> now!</p>
     </div>
 </hcs:standard-page>
