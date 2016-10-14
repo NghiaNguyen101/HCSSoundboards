@@ -25,7 +25,8 @@ public class AccountDAO {
                 username);
     }
 
-    private boolean doesUserExist(String username) {
+    @Transactional
+    public boolean doesUserExist(String username) {
         return jdbcTemplate.queryForObject("select count(*) > 0 from user where username = ?",
                 new Object[] {username}, Boolean.class);
     }

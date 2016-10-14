@@ -82,4 +82,15 @@ public class SecurityService {
         String hashedPassword = encoder.encode(password);
         accountDao.registerUser(username, hashedPassword);
     }
+
+    /**
+     * Check username using ajax
+     * @param username The new user's username
+     * @return true if exist, false if not
+     */
+    public boolean checkUsernameAjax(String username){
+        if(accountDao.doesUserExist(username))
+            return true;
+        return false;
+    }
 }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * This class handles requests for authentication-related URLs.
@@ -44,5 +45,18 @@ public class AuthController extends BaseController {
         securityService.registerUser(username, password);
         securityService.autoLogin(username, password);
         return "redirect:/";
+    }
+
+    /**
+     * Check if the username exist by calling ajax, this will get called when user input username
+     * @param username the username user wants to register
+     *
+     */
+    @RequestMapping (value="/checkUsername", method = RequestMethod.GET)
+    @ResponseBody
+    public String checkUsername(@RequestParam String username){
+        if(securityService.checkUsernameAjax(username))
+            return "Taken";
+        return "Good";
     }
 }
