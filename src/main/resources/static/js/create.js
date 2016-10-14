@@ -12,6 +12,8 @@ $(document).ready(function () {  
             $("#pass_error").html("Password must be at least 8 chracters long!"); 
             is_error = 1;
         }
+        else
+            $("#pass_error").html("");
 
         // See if the warning is cleared
         if($("#nameTaken").html() != '')
