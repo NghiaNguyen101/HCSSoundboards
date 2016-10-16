@@ -21,7 +21,7 @@ public class SoundboardService {
 
     /**
      * Gets the sound file for a sound id.
-     * @param soundId The id of the sound in question.
+     * @param soundId The boardId of the sound in question.
      * @return The sound's file.
      * @throws IOException Shouldn't happen.
      */
@@ -33,15 +33,31 @@ public class SoundboardService {
      * Gets a board for viewing. Checks to make sure the user is authorized
      * to view the board.
      * @param user The user trying to view the board.
-     * @param boardId The id of the board.
+     * @param boardId The boardId of the board.
      * @return The board (with sounds populated) if the user is authorized.
      */
     public Board getBoardForViewing(HCSUser user, int boardId) {
-        Board board = soundboardDao.getBoard(boardId, true);
+        Board board = soundboardDao.getBoard(boardId, false, true);
         if (!canViewBoard(user, board)) {
             throw new ForbiddenException();
         }
         return board;
+    }
+
+    public Board getBoardForPreviewing(HCSUser user, int boardId) {
+        Board board = soundboardDao.getBoard(boardId, true, false);
+        if (!canEditBoard(user, board)) {
+            throw new ForbiddenException();
+        }
+        return board;
+    }
+
+    public void shareBoard(HCSUser user, int boardId) {
+        Board board = soundboardDao.getBoard(boardId, false, false);
+        if (!canEditBoard(user, board)) {
+            throw new ForbiddenException();
+        }
+        soundboardDao.shareBoard(boardId);
     }
 
     /**
@@ -52,7 +68,7 @@ public class SoundboardService {
      * @return The board (with sounds populated) if the user is authorized.
      */
     public Board getBoardForEditing(HCSUser user, int boardId) {
-        Board board = soundboardDao.getBoard(boardId, true);
+        Board board = soundboardDao.getBoard(boardId, true, false);
         if (!canEditBoard(user, board)) {
             throw new ForbiddenException();
         }
@@ -80,7 +96,7 @@ public class SoundboardService {
      * @return List of the ids of the new sounds.
      */
     public List<Integer> addSoundsToBoard(HCSUser user, List<SoundFile> sounds, List<String> names, int boardId) {
-        Board board = soundboardDao.getBoard(boardId, false);
+        Board board = soundboardDao.getBoard(boardId, false, false);
         if (canEditBoard(user, board)) {
             return soundboardDao.addSoundsToBoard(sounds, names, boardId);
         }
@@ -100,7 +116,7 @@ public class SoundboardService {
     }
 
     private boolean canViewBoard(HCSUser user, Board board) {
-        return board.isPublic() || canEditBoard(user, board);
+        return board.hasBeenShared() || canEditBoard(user, board);
     }
 
     private boolean canEditBoard(HCSUser user, Board board) {

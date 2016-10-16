@@ -12,7 +12,7 @@
         <hcs:form action="/login" method="post">
             <div><label> User Name  &nbsp;&nbsp;&nbsp;<input type="text" name="username" required="required"/> </label></div>
             <div><label> Password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="password" required="required"/> </label></div>
-            <div><input type="submit" value=""/></div>
+            <div><input type="submit" value="Sign in"/></div>
         </hcs:form>
     </div>
     <div>

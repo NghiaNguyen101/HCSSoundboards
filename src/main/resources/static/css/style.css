@@ -57,7 +57,7 @@ body .footer {
 #fineprint {
     font-size: 90%;
 }
-
+/*
 input[type=submit] {
     background: url(https://s19.postimg.org/lc46pa8kj/Sign_In.png);
     border: 0;
@@ -65,7 +65,7 @@ input[type=submit] {
     height: 42px;
     width: 113px;
 }
-
+*/
 #login label {
     justify-content: center;
     align-content: center;

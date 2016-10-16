@@ -1,14 +1,19 @@
 package com.hcs.soundboard.db;
 
 import com.hcs.soundboard.data.Board;
+import com.hcs.soundboard.data.BoardVersion;
 import com.hcs.soundboard.data.SoundFile;
 import com.hcs.soundboard.data.SoundMetadata;
+import com.hcs.soundboard.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,122 +29,186 @@ public class SoundboardDAO {
 
     /**
      * Gets the sound file BLOB from the the DB.
-     * @param soundId The id of the sound to get.
+     *
+     * @param soundId The boardId of the sound to get.
      * @return The corresponding SoundFile
      * @throws IOException Shouldn't happen
      */
     @Transactional
     public SoundFile getSoundFile(int soundId) throws IOException {
         return jdbcTemplate.queryForObject(
-                "select sound, size from sound where sound.id=?",
-                new Object[] {soundId},
+                "SELECT sound, size FROM sound WHERE sound.id=?",
+                new Object[]{soundId},
                 (rs, rn) -> new SoundFile(soundId, rs.getBinaryStream("sound"), rs.getInt("size")));
     }
 
     /**
      * Gets soundboard metadata as well as optionally a list of sound
      * metadata for all sounds on the board.
-     * @param boardId The id of the board in question.
-     * @param getSounds Whether or not the sounds field of the Board object
-     *                  should be populated. When fetching a board to see who
-     *                  owner is, we don't actually care about the sounds, so we
-     *                  we don't waste time getting them.
+     *
+     * @param boardId The boardId of the board in question.
      * @return The board in question.
      */
     @Transactional
-    public Board getBoard(int boardId, boolean getSounds) {
-        return jdbcTemplate.queryForObject(
-                "select title, description, username, public, createDate " +
-                        "from board join user on board.ownerId = user.id where board.id = ?",
-                new Object[] {boardId},
-                (rs, rn) -> new Board(boardId,
-                        getSounds ? getAllSoundsForBoard(boardId) : null,
-                        rs.getString("username"),
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getBoolean("public"),
-                        rs.getDate("createDate")));
+    public Board getBoard(int boardId, boolean getUnsharedSounds, boolean getSharedSounds) {
+        try {
+            Board board = jdbcTemplate.queryForObject("SELECT board.id, username, hidden, createDate, " +
+                            "u.title, u.description, u.updateDate, " +
+                            "s.title, s.description, s.updateDate " +
+                            "FROM user JOIN board ON user.id = board.ownerId " +
+                            "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
+                            "LEFT JOIN board_version s ON board.id = s.boardId AND s.shared " +
+                            "WHERE board.id = ?",
+                    new Object[]{boardId},
+                    this::boardMapper);
+
+            if (getUnsharedSounds) {
+                board.getUnsharedVersion().setSounds(getAllSoundsForBoardVersion(boardId, false));
+            }
+            if (getSharedSounds && board.hasBeenShared()) {
+                board.getSharedVersion().setSounds(getAllSoundsForBoardVersion(boardId, true));
+            }
+
+            return board;
+        } catch (EmptyResultDataAccessException e) {
+            throw new NotFoundException();
+        }
+
+    }
+
+    private Board boardMapper(ResultSet rs, int rn) throws SQLException {
+        return new Board(
+                rs.getInt("board.id"),
+                rs.getString("username"),
+                rs.getBoolean("hidden"),
+                rs.getTimestamp("createDate"),
+                new BoardVersion(
+                        rs.getInt("board.id"),
+                        null,
+                        rs.getString("u.title"),
+                        rs.getString("u.description"),
+                        false,
+                        rs.getTimestamp("u.updateDate")),
+                rs.getString("s.title") == null ? null :
+                        new BoardVersion(
+                                rs.getInt("board.id"),
+                                null,
+                                rs.getString("s.title"),
+                                rs.getString("s.description"),
+                                true,
+                                rs.getTimestamp("s.updateDate")));
     }
 
     /**
      * Gets sound metadata for all the sounds on a particular board.
-     * @param boardId The id of the board in question.
+     *
+     * @param boardId The boardId of the board in question.
      * @return Sound metadata for all sounds on the board.
      */
     @Transactional
-    private List<SoundMetadata> getAllSoundsForBoard(int boardId) {
+    private List<SoundMetadata> getAllSoundsForBoardVersion(int boardId, boolean shared) {
         return jdbcTemplate.query(
-                "select id, soundName, public from sound join board_x_sound on sound.id = board_x_sound.soundId " +
-                        "where boardId = ?",
-                new Object[] {boardId},
-                (rs, rownum) -> new SoundMetadata(rs.getInt("id"), rs.getString("soundName"), rs.getBoolean("public")));
+                "SELECT id, soundName FROM sound JOIN board_x_sound ON sound.id = board_x_sound.soundId " +
+                        "WHERE boardId = ? AND shared = ?",
+                new Object[]{boardId, shared},
+                (rs, rownum) -> new SoundMetadata(rs.getInt("id"), rs.getString("soundName")));
     }
 
     /**
      * Adds all the sound file to a board, with the given names.
-     * @param sounds The SoundFiles for each sound to add.
-     * @param names The names of the sounds, parallel to the sounds list.
-     * @param boardId The id of the board in question.
+     *
+     * @param sounds  The SoundFiles for each sound to add.
+     * @param names   The names of the sounds, parallel to the sounds list.
+     * @param boardId The boardId of the board in question.
      * @return A list containing the ids of the sounds which have been added.
      */
     @Transactional
     public List<Integer> addSoundsToBoard(List<SoundFile> sounds, List<String> names, int boardId) {
         List<Object[]> soundArgs = sounds.stream()
-                .map(s -> new Object[] {s.getSound(), s.getSize()})
+                .map(s -> new Object[]{s.getSound(), s.getSize()})
                 .collect(Collectors.toList());
 
-        jdbcTemplate.batchUpdate("insert into sound (sound, size) VALUE (?, ?)",
+        jdbcTemplate.batchUpdate("INSERT INTO sound (sound, size) VALUE (?, ?)",
                 soundArgs);
 
         List<Integer> soundIds = jdbcTemplate.queryForList(
-                "select id from (select id from sound order by id desc limit ?) ids order by id asc",
-                new Object[] {sounds.size()},
+                "SELECT id FROM (SELECT id FROM sound ORDER BY id DESC LIMIT ?) ids ORDER BY id ASC",
+                new Object[]{sounds.size()},
                 Integer.class);
 
         List<Object[]> boardXSoundArgs = IntStream.range(0, soundIds.size())
-                .mapToObj(i -> new Object[] {boardId, soundIds.get(i), names.get(i)})
+                .mapToObj(i -> new Object[]{boardId, soundIds.get(i), names.get(i)})
                 .collect(Collectors.toList());
 
-        jdbcTemplate.batchUpdate("insert into board_x_sound (boardId, soundId, soundName, public) " +
-                        "VALUE (?, ?, ?, false)",
+        jdbcTemplate.batchUpdate("INSERT INTO board_x_sound (boardId, soundId, soundName, shared) " +
+                        "VALUE (?, ?, ?, FALSE)",
                 boardXSoundArgs);
+
+        jdbcTemplate.update("UPDATE board_version SET updateDate = now()" +
+                        "WHERE boardId = ? AND shared = FALSE",
+                boardId);
+
         return soundIds;
     }
 
     /**
      * Creates a new board record with the given owner
-     * @param owner The username of the user who is creating the board.
-     * @param title The title of the new soundboard
+     *
+     * @param owner       The username of the user who is creating the board.
+     * @param title       The title of the new soundboard
      * @param description The user's description of the soundboard
-     * @return The id of the new board.
+     * @return The boardId of the new board.
      */
     @Transactional
     public int createSoundboard(String owner, String title, String description) {
-        jdbcTemplate.update("insert into board (title, description, ownerId, public, createDate) " +
-                        "VALUE (?, ?, (select id from user where username=?), false, now())",
-                title, description, owner);
-        return jdbcTemplate.queryForObject("select last_insert_id()", Integer.class);
+        jdbcTemplate.update("INSERT INTO board (ownerId, createDate, hidden) " +
+                        "VALUE ((SELECT id FROM user WHERE username=?), now(), FALSE)",
+                owner);
+
+        int boardId = jdbcTemplate.queryForObject("SELECT last_insert_id()", Integer.class);
+
+        jdbcTemplate.update("INSERT INTO board_version (boardId, shared, title, description, updateDate) " +
+                        "VALUE (?, FALSE, ?, ?, now())",
+                boardId, title, description);
+
+        return boardId;
+    }
+
+    @Transactional
+    public void shareBoard(int boardId) {
+        jdbcTemplate.update("DELETE FROM board_version WHERE boardId = ? AND shared = TRUE", boardId);
+
+        jdbcTemplate.update("DELETE FROM board_x_sound WHERE boardId = ? AND shared = TRUE", boardId);
+
+        jdbcTemplate.update("UPDATE board_version SET updateDate = now() " +
+                "WHERE boardId = ? AND shared = FALSE", boardId);
+
+        jdbcTemplate.update("INSERT INTO board_version (boardId, shared, title, description, updateDate) " +
+                "SELECT boardId, TRUE, title, description, updateDate FROM board_version " +
+                "WHERE boardId = ? AND shared = FALSE", boardId);
+
+        jdbcTemplate.update("INSERT INTO board_x_sound (boardId, shared, soundId, soundName)" +
+                "SELECT boardId, TRUE, soundId, soundName FROM board_x_sound " +
+                "WHERE boardId = ? AND shared = FALSE", boardId);
     }
 
     /**
-     * Gets metadata for all of the soundboards a user owns.
+     * Gets metadata for all of the soundboards a user owns, for both shared and unshared versions.
+     *
      * @param username The username of the user for whom we are getting boards.
      * @return A list of all the boards a user has created, public or not. The
      * sounds field is NOT populated.
      */
     @Transactional
     public List<Board> getUsersBoards(String username) {
-        // TODO Order the boards by createDate or something.
-        return jdbcTemplate.query(
-                "select board.id, title, description, username, public, createDate " +
-                        "from board join user on board.ownerId = user.id where user.username = ?",
-                new Object[] {username},
-                (rs, rn) -> new Board(rs.getInt("board.id"),
-                        null,
-                        rs.getString("username"),
-                        rs.getString("title"),
-                        rs.getString("description"),
-                        rs.getBoolean("public"),
-                        rs.getDate("createDate")));
+        return jdbcTemplate.query("SELECT board.id, username, hidden, createDate, " +
+                        "u.title, u.description, u.updateDate, " +
+                        "s.title, s.description, s.updateDate " +
+                        "FROM user JOIN board ON user.id = board.ownerId " +
+                        "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
+                        "LEFT JOIN board_version s ON board.id = s.boardId AND s.shared " +
+                        "WHERE username = ?",
+                new Object[]{username},
+                this::boardMapper);
     }
 }

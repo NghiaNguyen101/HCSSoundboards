@@ -59,6 +59,15 @@ public class SoundboardController extends BaseController {
     public ModelAndView viewBoard(@PathVariable int boardId) {
         ModelAndView mav = new ModelAndView("board");
         mav.addObject("board", soundboardService.getBoardForViewing(getUser(), boardId));
+        mav.addObject("useShared", true);
+        return mav;
+    }
+
+    @RequestMapping("/board/{boardId:.+}/preview")
+    public ModelAndView previewBoard(@PathVariable int boardId) {
+        ModelAndView mav = new ModelAndView("board");
+        mav.addObject("board", soundboardService.getBoardForPreviewing(getUser(), boardId));
+        mav.addObject("useShared", false);
         return mav;
     }
 
@@ -97,6 +106,12 @@ public class SoundboardController extends BaseController {
         return mav;
     }
 
+    @RequestMapping(value = "/board/{boardId:.+}/share", method = RequestMethod.POST)
+    public String share(@PathVariable int boardId) {
+        soundboardService.shareBoard(getUser(), boardId);
+        return "redirect:/board/" + boardId;
+    }
+
     /**
      * Handles a request for the your-boards page.
      * @return Page showing all the user's boards.
@@ -126,7 +141,8 @@ public class SoundboardController extends BaseController {
         // Get the sound names from their original filenames, removing extension
         List<String> names = sounds.stream().map(s -> {
             String filename = s.getOriginalFilename();
-            return filename.substring(0, filename.lastIndexOf("."));
+            int index = filename.lastIndexOf(".");
+            return index < 0 ? filename : filename.substring(0, index);
         }).collect(Collectors.toList());
 
         soundboardService.addSoundsToBoard(getUser(), soundFiles, names, boardId);

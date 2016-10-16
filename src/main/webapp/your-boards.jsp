@@ -5,11 +5,24 @@
     <%--@elvariable id="boards" type="java.util.List<com.hcs.soundboard.data.Board>"--%>
     <c:forEach var="board" items="${boards}">
         <div>
-            <p><a href="/board/${board.id}"><b><c:out value="${board.title}"/></b></a></p>
-            <p><c:out value="${board.description}"/></p>
-            <p>${board.isPublic() ? 'Public' : 'Private'}</p>
-            <p><a href="/board/${board.id}/edit">Edit</a></p>
-            <hr />
+            <c:choose>
+                <c:when test="${board.hasBeenShared()}">
+                    <p><a href="/board/${board.id}"><b><c:out value="${board.sharedVersion.title}"/></b></a></p>
+                    <p><c:out value="${board.sharedVersion.description}"/></p>
+                    <p>Shared</p>
+                    <p>${board.hasUnsharedChanges() ? 'Unshared Changes' : 'No Unshared Changes'}</p>
+                    <p>${board.hidden ? 'Hidden' : 'Not Hidden'}</p>
+                    <p><a href="/board/${board.id}/edit">Edit</a></p>
+                </c:when>
+                <c:otherwise>
+                    <p><a href="/board/${board.id}/edit"><b><c:out value="${board.unsharedVersion.title}"/></b></a></p>
+                    <p><c:out value="${board.unsharedVersion.description}"/></p>
+                    <p>Not Yet Shared</p>
+                    <p>${board.hidden ? 'Hidden' : 'Not Hidden'}</p>
+                    <p><a href="/board/${board.id}/edit">Edit</a></p>
+                </c:otherwise>
+            </c:choose>
+            <hr/>
         </div>
     </c:forEach>
 </hcs:standard-page>
