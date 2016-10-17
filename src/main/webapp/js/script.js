@@ -44,4 +44,30 @@ $(document).ready(function () {  
             }
         });
     });
+
+    var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
+    var codeIndex = 0;
+
+    $(document).keyup(function(event) {
+        if (event.key === konamiCode[codeIndex]) {
+            codeIndex++;
+            if (codeIndex === 8) {
+                randomSounds();
+                codeIndex = 0;
+            }
+        } else {
+            codeIndex = 0
+        }
+    });
  });
+
+function playSound(soundId) {
+    new Audio('/sound/' + soundId).play()
+}
+function randomSounds() {
+    var sounds = $('audio');
+    var sound = sounds[Math.floor(Math.random() * sounds.length)];
+    $(sound).hover();
+    new Audio(sound.src).play();
+    setTimeout(randomSounds, 650)
+}
