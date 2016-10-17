@@ -16,4 +16,7 @@
             <hcs:sound-button sound="${sound}" />
         </c:forEach>
     </div>
+    <c:if test="${user.username == board.ownerName}">
+        <p><a href="/board/${board.id}/edit">Edit</a></p>
+    </c:if>
 </hcs:standard-page>
