@@ -7,7 +7,9 @@
         <p class="lead">View soundboards and create your own.</p>
         <br>
         <br>
-        <a href="/create" style="text-align: center"><img id="createButton" src="https://s19.postimg.org/fxw7q942r/create.png"></a>
+        <a href="/create" style="text-align: center">
+            <button class="btn btn-primary">Create a Soundboard</button>
+        </a>
     </div>
 
 

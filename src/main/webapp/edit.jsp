@@ -32,7 +32,7 @@
             <c:otherwise>
                 <a href="/board/${board.id}/preview">Preview Changes</a>
                 <hcs:form method="post" action="/board/${board.id}/share">
-                    <input class type="submit" value="Share Soundboard">
+                    <input class="btn btn-primary" type="submit" value="Share Soundboard">
                 </hcs:form>
             </c:otherwise>
         </c:choose>

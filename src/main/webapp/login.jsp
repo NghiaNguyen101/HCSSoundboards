@@ -5,14 +5,30 @@
     <div class="jumbotron">
         <p class="lead">Sign in to your HCS account.</p>
     </div>
-    <div>
+    <div class="form-signin">
         <c:if test="${param.error != null}">
-            Invalid username or password.
+            <p>Invalid username or password.</p>
         </c:if>
         <hcs:form action="/login" method="post">
-            <div><label> User Name  &nbsp;&nbsp;&nbsp;<input type="text" name="username" required="required"/> </label></div>
-            <div><label> Password &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="password" name="password" required="required"/> </label></div>
-            <div><input type="submit" value="Sign in"/></div>
+            <div class="form-group">
+                <input type="text" class="form-control login"
+                       placeholder="Username" name="username"
+                       required="required" autocomplete="off" autofocus/>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control login"
+                       placeholder="Password" name="password"
+                       required="required" autocomplete="off"/>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="remember-me" id="remember-me"/>
+                    Remember me
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Sign in"/>
+            </div>
         </hcs:form>
     </div>
     <div>

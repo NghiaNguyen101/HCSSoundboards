@@ -2,11 +2,27 @@
 <%@ include file="/includes.jsp" %>
 
 <hcs:standard-page title="Sign up" page="register">
-    <div>
+    <div class="jumbotron">
+        <p class="lead">Sign up for an account</p>
+    </div>
+    <div class="form-signin">
         <hcs:form action="/register" method="post" id="register">
-            <div><label>Username:<input type="text" name="username" id="username" required="required"/></label></div>
-            <div><label>Password:<input type="password" name="password" id="password" required="required"/> </label></div>
-            <div><input type="submit" value="Sign Up" class="btn"/></div>
+            <div class="form-group">
+                <input type="text" class="form-control"
+                       placeholder="Username" name="username" id="username"
+                       required="required" autocomplete="off" autofocus/>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control"
+                       placeholder="Password" name="password" id="password"
+                       required="required" autocomplete="off"/>
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control"
+                       placeholder="Confirm Password" name="confirm-password" id="confirm-password"
+                       required="required" autocomplete="off"/>
+            </div>
+            <div><input type="submit" value="Sign Up" class="btn btn-primary"/></div>
         </hcs:form>
         <div id="pass_error"></div>
         <div id="nameTaken"></div>
