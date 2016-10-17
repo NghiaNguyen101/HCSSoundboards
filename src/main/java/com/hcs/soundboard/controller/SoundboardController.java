@@ -71,6 +71,21 @@ public class SoundboardController extends BaseController {
         return mav;
     }
 
+    @RequestMapping("/browse")
+    public ModelAndView browseBoards() {
+        ModelAndView mav = new ModelAndView("browse");
+        mav.addObject("boards", soundboardService.getAllBrowsableBoards());
+        return mav;
+    }
+
+    @RequestMapping("/user/{username:.+}")
+    public ModelAndView userPage(@PathVariable String username) {
+        ModelAndView mav = new ModelAndView("user");
+        mav.addObject("username", username);
+        mav.addObject("boards", soundboardService.getUsersPublicBoards(username));
+        return mav;
+    }
+
     /**
      * The page to create a new soundboard
      * @return "create"

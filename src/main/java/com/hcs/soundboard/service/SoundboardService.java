@@ -87,6 +87,14 @@ public class SoundboardService {
         return soundboardDao.getUsersBoards(user.getUsername());
     }
 
+    public List<Board> getAllBrowsableBoards() {
+        return soundboardDao.getAllBrowsableBoards();
+    }
+
+    public List<Board> getUsersPublicBoards(String username) {
+        return soundboardDao.getUsersPublicBoards(username);
+    }
+
     /**
      * Adds the sounds to the board. Throws if the user is authorized to edit the board.
      * @param user The user adding the sounds to the board.

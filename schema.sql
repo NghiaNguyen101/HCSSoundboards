@@ -5,22 +5,21 @@ USE soundboard;
 # User account tables
 CREATE TABLE user
 (
-  id       INT(11) PRIMARY KEY    NOT NULL AUTO_INCREMENT,
-  username VARCHAR(45)            NOT NULL UNIQUE,
-  password VARCHAR(60)            NOT NULL,
-  enabled  TINYINT(4) DEFAULT '1' NOT NULL
+  username VARCHAR(45) PRIMARY KEY,
+  password VARCHAR(60)          NOT NULL,
+  enabled  BOOLEAN DEFAULT TRUE NOT NULL
 );
 CREATE TABLE role
 (
-  id     INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  userId INT(11)             NOT NULL,
-  role   VARCHAR(45)         NOT NULL,
-  CONSTRAINT fk_username FOREIGN KEY (userId) REFERENCES user (id)
+  id       INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  username VARCHAR(45)         NOT NULL,
+  role     VARCHAR(45)         NOT NULL,
+  CONSTRAINT fk_username FOREIGN KEY (username) REFERENCES user (username)
 );
 CREATE INDEX fk_username
-  ON role (userId);
+  ON role (username);
 CREATE UNIQUE INDEX uni_username_role
-  ON role (role, userId);
+  ON role (role, username);
 
 # Application logic tables
 CREATE TABLE sound
@@ -33,10 +32,10 @@ CREATE TABLE sound
 CREATE TABLE board
 (
   id         INT PRIMARY KEY AUTO_INCREMENT,
-  ownerId    INT       NOT NULL,
-  hidden     BOOLEAN   NOT NULL,
-  createDate TIMESTAMP NOT NULL,
-  FOREIGN KEY (ownerId) REFERENCES user (id)
+  ownerName  VARCHAR(45) NOT NULL,
+  hidden     BOOLEAN     NOT NULL,
+  createDate TIMESTAMP   NOT NULL,
+  FOREIGN KEY (ownerName) REFERENCES user (username)
 );
 
 CREATE TABLE board_version

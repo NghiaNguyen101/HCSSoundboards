@@ -21,7 +21,7 @@ public class AccountDAO {
         }
         jdbcTemplate.update("INSERT INTO user (username, password, enabled) VALUE (?, ?, true)",
                 username, hashedPassword);
-        jdbcTemplate.update("INSERT into role (userId, role) VALUE ((select id from User where username = ?), 'ROLE_USER')",
+        jdbcTemplate.update("INSERT into role (username, role) VALUE (?, 'ROLE_USER')",
                 username);
     }
 

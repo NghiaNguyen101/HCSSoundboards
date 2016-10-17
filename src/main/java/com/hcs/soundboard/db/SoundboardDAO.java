@@ -52,10 +52,10 @@ public class SoundboardDAO {
     @Transactional
     public Board getBoard(int boardId, boolean getUnsharedSounds, boolean getSharedSounds) {
         try {
-            Board board = jdbcTemplate.queryForObject("SELECT board.id, username, hidden, createDate, " +
+            Board board = jdbcTemplate.queryForObject("SELECT board.id, ownerName, hidden, createDate, " +
                             "u.title, u.description, u.updateDate, " +
                             "s.title, s.description, s.updateDate " +
-                            "FROM user JOIN board ON user.id = board.ownerId " +
+                            "FROM board " +
                             "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
                             "LEFT JOIN board_version s ON board.id = s.boardId AND s.shared " +
                             "WHERE board.id = ?",
@@ -76,10 +76,23 @@ public class SoundboardDAO {
 
     }
 
+    @Transactional
+    public List<Board> getAllBrowsableBoards() {
+        return jdbcTemplate.query("SELECT board.id, ownerName, hidden, createDate, " +
+                        "u.title, u.description, u.updateDate, " +
+                        "s.title, s.description, s.updateDate " +
+                        "FROM board " +
+                        "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
+                        "JOIN board_version s ON board.id = s.boardId AND s.shared " +
+                        "WHERE NOT board.hidden " +
+                        "ORDER BY s.updateDate DESC",
+                this::boardMapper);
+    }
+
     private Board boardMapper(ResultSet rs, int rn) throws SQLException {
         return new Board(
                 rs.getInt("board.id"),
-                rs.getString("username"),
+                rs.getString("ownerName"),
                 rs.getBoolean("hidden"),
                 rs.getTimestamp("createDate"),
                 new BoardVersion(
@@ -161,8 +174,8 @@ public class SoundboardDAO {
      */
     @Transactional
     public int createSoundboard(String owner, String title, String description) {
-        jdbcTemplate.update("INSERT INTO board (ownerId, createDate, hidden) " +
-                        "VALUE ((SELECT id FROM user WHERE username=?), now(), FALSE)",
+        jdbcTemplate.update("INSERT INTO board (ownerName, createDate, hidden) " +
+                        "VALUE (?, now(), FALSE)",
                 owner);
 
         int boardId = jdbcTemplate.queryForObject("SELECT last_insert_id()", Integer.class);
@@ -201,13 +214,28 @@ public class SoundboardDAO {
      */
     @Transactional
     public List<Board> getUsersBoards(String username) {
-        return jdbcTemplate.query("SELECT board.id, username, hidden, createDate, " +
+        return jdbcTemplate.query("SELECT board.id, ownerName, hidden, createDate, " +
                         "u.title, u.description, u.updateDate, " +
                         "s.title, s.description, s.updateDate " +
-                        "FROM user JOIN board ON user.id = board.ownerId " +
+                        "FROM board " +
                         "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
                         "LEFT JOIN board_version s ON board.id = s.boardId AND s.shared " +
-                        "WHERE username = ?",
+                        "WHERE ownerName = ? " +
+                        "ORDER BY u.updateDate DESC",
+                new Object[]{username},
+                this::boardMapper);
+    }
+
+    @Transactional
+    public List<Board> getUsersPublicBoards(String username) {
+        return jdbcTemplate.query("SELECT board.id, ownerName, hidden, createDate, " +
+                        "u.title, u.description, u.updateDate, " +
+                        "s.title, s.description, s.updateDate " +
+                        "FROM board " +
+                        "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
+                        "JOIN board_version s ON board.id = s.boardId AND s.shared " +
+                        "WHERE ownerName = ? AND NOT board.hidden " +
+                        "ORDER BY s.updateDate DESC",
                 new Object[]{username},
                 this::boardMapper);
     }

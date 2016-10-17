@@ -9,7 +9,7 @@
     <div class="jumbotron">
         <h1><c:out value="${version.title}"/></h1>
         <p class="lead"><c:out value="${version.description}"/></p>
-        <p class="lead">By <c:out value="${board.ownerName}"/></p>
+        <p class="lead">By <hcs:user username="${board.ownerName}"/></p>
     </div>
     <div id="buttons">
         <c:forEach var="sound" items="${version.sounds}">
