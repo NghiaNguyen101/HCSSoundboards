@@ -112,6 +112,22 @@ public class SoundboardService {
     }
 
     /**
+     * Removes the sound from the board. Throws if the user is not authorized to edit the board.
+     * @param user The user removing the sound from the board.
+     * @param soundIds The sounds to remove.
+     * @param boardId The id of the board in question.
+     * @return Id of the removed sound.
+     */
+    public void removeSoundsFromBoard(HCSUser user, List<Integer> soundIds, int boardId) {
+        Board board = soundboardDao.getBoard(boardId, false, false);
+        if (canEditBoard(user, board)) {
+            soundboardDao.removeSoundsFromBoard(soundIds, boardId);
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+    /**
      * Creates a new soundboard
      * @param user The user creating the soundboard.
      * @return The id of the new board.

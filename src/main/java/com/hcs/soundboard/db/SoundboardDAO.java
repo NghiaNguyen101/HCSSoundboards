@@ -157,10 +157,30 @@ public class SoundboardDAO {
                         "VALUE (?, ?, ?, FALSE)",
                 boardXSoundArgs);
 
-        jdbcTemplate.update("UPDATE board_version SET updateDate = now()" +
+        jdbcTemplate.update("UPDATE board_version SET updateDate = now() " +
                         "WHERE boardId = ? AND shared = FALSE",
                 boardId);
 
+        return soundIds;
+    }
+    /**
+     * Removes a sound from the soundboard
+     *
+     * @param soundIds  The ids of the sounds to remove.
+     * @param boardId The boardId of the board in question.
+     * @return The soundId of the removed sound.
+     */
+    public List<Integer> removeSoundsFromBoard(List<Integer> soundIds, int boardId) {
+        List<Object[]> boardXSoundArgs = IntStream.range(0, soundIds.size())
+                .mapToObj(i -> new Object[]{boardId, soundIds.get(i)})
+                .collect(Collectors.toList());
+
+        jdbcTemplate.batchUpdate("DELETE FROM board_x_sound WHERE boardId = ? " +
+                        "AND soundId = ? AND shared = FALSE",
+                boardXSoundArgs);
+        jdbcTemplate.update("UPDATE board_version SET updateDate = now() " +
+                        "WHERE boardId = ? AND shared = FALSE",
+                boardId);
         return soundIds;
     }
 

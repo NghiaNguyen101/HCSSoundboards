@@ -164,6 +164,13 @@ public class SoundboardController extends BaseController {
         return String.format("redirect:/board/%d/edit", boardId);
     }
 
+    @RequestMapping(value = "/board/{boardId:.+}/remove-sounds", method = RequestMethod.POST)
+    public String removeSounds(@PathVariable int boardId,
+                         @RequestParam("soundId") List<Integer> soundIds) throws IOException {
+        soundboardService.removeSoundsFromBoard(getUser(), soundIds, boardId);
+        return String.format("redirect:/board/%d/edit", boardId);
+    }
+
     private InputStream getInputStream(MultipartFile file) {
         try {
             return file.getInputStream();

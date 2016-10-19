@@ -10,9 +10,13 @@
         <p class="lead"><c:out value="${version.description}"/></p>
     </div>
     <div id="buttons">
-        <c:forEach var="sound" items="${version.sounds}">
-            <hcs:sound-button sound="${sound}"/>
-        </c:forEach>
+        <hcs:form action="/board/${board.id}/remove-sounds" method="post">
+            <c:forEach var="sound" items="${version.sounds}">
+                <hcs:sound-button sound="${sound}"/>
+                <input type="checkbox" name="soundId" value="${sound.id}">
+            </c:forEach>
+            <input type="submit" value="Remove selected sounds">
+        </hcs:form>
     </div>
     <div>
         <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/upload">
