@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * Hanlde all execptions here
+ * Handle all execptions here
  */
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
