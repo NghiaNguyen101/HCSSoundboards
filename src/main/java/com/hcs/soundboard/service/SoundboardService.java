@@ -96,7 +96,7 @@ public class SoundboardService {
     }
 
     /**
-     * Adds the sounds to the board. Throws if the user is authorized to edit the board.
+     * Adds the sounds to the board. Throws if the user is not authorized to edit the board.
      * @param user The user adding the sounds to the board.
      * @param sounds The sounds to add
      * @param names The names of the sounds
