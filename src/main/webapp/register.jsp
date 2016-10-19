@@ -24,10 +24,8 @@
             </div>
             <div><input type="submit" value="Sign Up" class="btn btn-primary"/></div>
         </hcs:form>
-        <div id="pass_error"></div>
         <div id="nameTaken"></div>
-        <c:if test="${param.taken != null}">
-            Sorry, that username is already taken
-        </c:if>
+        <div id="pass_length_error"></div>
+        <div id="pass_not_match"></div>
     </div>
 </hcs:standard-page>
