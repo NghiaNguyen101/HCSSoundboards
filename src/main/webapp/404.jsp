@@ -6,9 +6,9 @@
         <h1>HCS Soundboards</h1>
         <p class="lead">View soundboards and create your own.</p>
         <br>
+        <h2> Error Page</h2>
         <br>
-        <h2>404 Page</h2>
-        <br>
+        <p> ${msg}</p>
         <br>
         <h2>Search??</h2>
     </div>
