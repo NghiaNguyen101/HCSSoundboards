@@ -21,7 +21,7 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler(NotFoundException.class)
     public ModelAndView NotFound(){
         System.out.println("In NOT FOUND");
-        return new ModelAndView("404", "msg", "Board not found on Server!");
+        return new ModelAndView("error-page", "msg", "Board not found on Server!");
     }
 
     /**
@@ -30,6 +30,6 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler(ForbiddenException.class)
     public ModelAndView Forbidden(){
         System.out.println("In Forbidden");
-        return new ModelAndView("404", "msg", "You do not have the authorization to edit!");
+        return new ModelAndView("error-page", "msg", "You do not have the authorization to edit!");
     }
 }

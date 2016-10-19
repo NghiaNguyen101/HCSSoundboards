@@ -38,7 +38,7 @@ public class CustomErrorController implements ErrorController{
     public ModelAndView error(HttpServletRequest request){
         HttpStatus status = getStatus(request);
         System.out.println(status.value());
-        return new ModelAndView("404", "msg", "URL not found on Server");
+        return new ModelAndView("error-page", "msg", "URL not found on Server");
     }
 
     /**
