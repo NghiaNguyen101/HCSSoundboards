@@ -13,11 +13,11 @@
         <hcs:form action="/board/${board.id}/edit-board" method="post">
             <c:forEach var="sound" items="${version.sounds}">
                 <p>
-                    <hcs:sound-button sound="${sound}"/>
                     <input type="hidden" name="soundId" value="${sound.id}">
                     <input type="checkbox" name="deleted" value="${sound.id}">
                     <input type="hidden" name="originalName" value="${sound.name}">
                     <input type="text" name="name" value="${sound.name}">
+                    <hcs:play-button sound="${sound}"/>
                 </p>
             </c:forEach>
             <input type="submit" value="Submit Changes">

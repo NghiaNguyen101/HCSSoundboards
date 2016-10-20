@@ -15,11 +15,20 @@ body #buttons {
     text-align: center;
 }
 
-body #buttons button {
+.play {
+    width: 70px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+
+}
+
+.view {
     width: 185px;
     margin-bottom: 5px;
     margin-right: 5px;
+
 }
+
 /*
 .btn-primary {
     background-color: mediumvioletred;
