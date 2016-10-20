@@ -3,12 +3,14 @@ package com.hcs.soundboard.service;
 import com.hcs.soundboard.data.Board;
 import com.hcs.soundboard.data.HCSUser;
 import com.hcs.soundboard.data.SoundFile;
+import com.hcs.soundboard.data.SoundMetadata;
 import com.hcs.soundboard.db.SoundboardDAO;
 import com.hcs.soundboard.exception.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -116,12 +118,34 @@ public class SoundboardService {
      * @param user The user removing the sound from the board.
      * @param soundIds The sounds to remove.
      * @param boardId The id of the board in question.
-     * @return Id of the removed sound.
      */
     public void removeSoundsFromBoard(HCSUser user, List<Integer> soundIds, int boardId) {
         Board board = soundboardDao.getBoard(boardId, false, false);
         if (canEditBoard(user, board)) {
             soundboardDao.removeSoundsFromBoard(soundIds, boardId);
+        } else {
+            throw new ForbiddenException();
+        }
+    }
+
+    /**
+     * Changes names of sounds in the board. Throws if the user is not authorized to edit the board.
+     * @param user The user changing the sound from the board.
+     * @param soundIds The sounds to change name.
+     * @param names The new names.
+     * @param boardId The id of the board in question.
+     */
+    public void editSoundNames(HCSUser user, List<Integer> soundIds, List<String> names, List<String> originalNames,
+                               int boardId) {
+        Board board = soundboardDao.getBoard(boardId, false, false);
+        if (canEditBoard(user, board)) {
+            List<SoundMetadata> metadatas = new ArrayList<>();
+            for (int i = 0; i < soundIds.size(); i++) {
+                if (!names.get(i).equals(originalNames.get(i))) {
+                    metadatas.add(new SoundMetadata(soundIds.get(i), names.get(i)));
+                }
+            }
+            soundboardDao.editSoundNames(metadatas, boardId);
         } else {
             throw new ForbiddenException();
         }

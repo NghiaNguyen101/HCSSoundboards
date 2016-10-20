@@ -112,6 +112,12 @@ public class SoundboardDAO {
                                 rs.getTimestamp("s.updateDate")));
     }
 
+    private void updateBoardVersion(int boardId) {
+        jdbcTemplate.update("UPDATE board_version SET updateDate = now() " +
+                        "WHERE boardId = ? AND shared = FALSE",
+                boardId);
+    }
+
     /**
      * Gets sound metadata for all the sounds on a particular board.
      *
@@ -157,17 +163,16 @@ public class SoundboardDAO {
                         "VALUE (?, ?, ?, FALSE)",
                 boardXSoundArgs);
 
-        jdbcTemplate.update("UPDATE board_version SET updateDate = now() " +
-                        "WHERE boardId = ? AND shared = FALSE",
-                boardId);
+        updateBoardVersion(boardId);
 
         return soundIds;
     }
+
     /**
-     * Removes a sound from the soundboard
+     * Removes sounds from the soundboard
      *
-     * @param soundIds  The ids of the sounds to remove.
-     * @param boardId The boardId of the board in question.
+     * @param soundIds The ids of the sounds to remove.
+     * @param boardId  The boardId of the board in question.
      * @return The soundId of the removed sound.
      */
     public List<Integer> removeSoundsFromBoard(List<Integer> soundIds, int boardId) {
@@ -178,11 +183,27 @@ public class SoundboardDAO {
         jdbcTemplate.batchUpdate("DELETE FROM board_x_sound WHERE boardId = ? " +
                         "AND soundId = ? AND shared = FALSE",
                 boardXSoundArgs);
-        jdbcTemplate.update("UPDATE board_version SET updateDate = now() " +
-                        "WHERE boardId = ? AND shared = FALSE",
-                boardId);
+        updateBoardVersion(boardId);
         return soundIds;
     }
+
+    /**
+     * Change name of sounds in soundboard
+     *
+     * @param metadatas The metadata of the sounds
+     * @param boardId   The boardId of the board in question.
+     */
+    public void editSoundNames(List<SoundMetadata> metadatas, int boardId) {
+        List<Object[]> boardXSoundArgs = metadatas.stream()
+                .map(metadata -> new Object[]{metadata.getName(), boardId, metadata.getId()})
+                .collect(Collectors.toList());
+
+        jdbcTemplate.batchUpdate("UPDATE board_x_sound SET soundName = ? WHERE boardId = ? " +
+                        "AND soundId = ? AND shared = FALSE",
+                boardXSoundArgs);
+        updateBoardVersion(boardId);
+    }
+
 
     /**
      * Creates a new board record with the given owner

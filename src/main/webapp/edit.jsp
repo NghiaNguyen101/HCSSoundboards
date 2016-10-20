@@ -10,12 +10,17 @@
         <p class="lead"><c:out value="${version.description}"/></p>
     </div>
     <div id="buttons">
-        <hcs:form action="/board/${board.id}/remove-sounds" method="post">
+        <hcs:form action="/board/${board.id}/edit-board" method="post">
             <c:forEach var="sound" items="${version.sounds}">
-                <hcs:sound-button sound="${sound}"/>
-                <input type="checkbox" name="soundId" value="${sound.id}">
+                <p>
+                    <hcs:sound-button sound="${sound}"/>
+                    <input type="hidden" name="soundId" value="${sound.id}">
+                    <input type="checkbox" name="deleted" value="${sound.id}">
+                    <input type="hidden" name="originalName" value="${sound.name}">
+                    <input type="text" name="name" value="${sound.name}">
+                </p>
             </c:forEach>
-            <input type="submit" value="Remove selected sounds">
+            <input type="submit" value="Submit Changes">
         </hcs:form>
     </div>
     <div>

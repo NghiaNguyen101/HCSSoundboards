@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -24,7 +25,8 @@ import java.util.stream.Collectors;
 public class SoundboardController extends BaseController {
     /**
      * This method handles a request for a particular sound clip.
-     * @param soundId The id of the sound to be fetched.
+     *
+     * @param soundId  The id of the sound to be fetched.
      * @param response This param is necessary so we can manually change the
      *                 headers on the response to enable caching.
      * @return The sound clip
@@ -52,6 +54,7 @@ public class SoundboardController extends BaseController {
 
     /**
      * Handles requests for viewing a board.
+     *
      * @param boardId the id of the board to be viewed.
      * @return board.jsp
      */
@@ -88,6 +91,7 @@ public class SoundboardController extends BaseController {
 
     /**
      * The page to create a new soundboard
+     *
      * @return "create"
      */
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -98,7 +102,7 @@ public class SoundboardController extends BaseController {
     /**
      * Handles requests to create a soundboard with a title and description.
      *
-     * @param title The title the user is giving the soundboard
+     * @param title       The title the user is giving the soundboard
      * @param description then description the user is giving the soundboard
      * @return A redirect to the edit page.
      */
@@ -129,6 +133,7 @@ public class SoundboardController extends BaseController {
 
     /**
      * Handles a request for the your-boards page.
+     *
      * @return Page showing all the user's boards.
      */
     @RequestMapping("/your-boards")
@@ -142,13 +147,13 @@ public class SoundboardController extends BaseController {
      * This URL is hit when the user uploads sounds to their board.
      *
      * @param boardId The id of the board to which the sound are being added.
-     * @param sounds The sound clips being uploaded.
+     * @param sounds  The sound clips being uploaded.
      * @return Redirects to the board-edit page
      * @throws IOException This shouldn't happen.
      */
     @RequestMapping(value = "/board/{boardId:.+}/upload", method = RequestMethod.POST)
     public String upload(@PathVariable int boardId,
-                      @RequestParam List<MultipartFile> sounds) throws IOException {
+                         @RequestParam List<MultipartFile> sounds) throws IOException {
         List<SoundFile> soundFiles = sounds.stream()
                 .map(s -> new SoundFile(0, getInputStream(s), s.getSize()))
                 .collect(Collectors.toList());
@@ -166,8 +171,20 @@ public class SoundboardController extends BaseController {
 
     @RequestMapping(value = "/board/{boardId:.+}/remove-sounds", method = RequestMethod.POST)
     public String removeSounds(@PathVariable int boardId,
-                         @RequestParam("soundId") List<Integer> soundIds) throws IOException {
+                               @RequestParam("delete") List<Integer> soundIds) throws IOException {
         soundboardService.removeSoundsFromBoard(getUser(), soundIds, boardId);
+        return String.format("redirect:/board/%d/edit", boardId);
+    }
+
+    @RequestMapping(value = "/board/{boardId:.+}/edit-board", method = RequestMethod.POST)
+    public String editBoard(@PathVariable int boardId,
+                            @RequestParam("soundId") List<Integer> soundIds,
+                            @RequestParam(value = "deleted", required = false) List<Integer> deletedIds,
+                            @RequestParam("name") List<String> names,
+                            @RequestParam("originalName") List<String> originalNames) throws IOException {
+        soundboardService.editSoundNames(getUser(), soundIds, names, originalNames, boardId);
+        if (!CollectionUtils.isEmpty(deletedIds))
+            soundboardService.removeSoundsFromBoard(getUser(), deletedIds, boardId);
         return String.format("redirect:/board/%d/edit", boardId);
     }
 
