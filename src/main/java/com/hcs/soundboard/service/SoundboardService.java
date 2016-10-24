@@ -152,6 +152,22 @@ public class SoundboardService {
     }
 
     /**
+     * Changes the soundboard name and description
+     * @param user The user changing the sound from the board.
+     * @param boardId The id of the board in question.
+     * @param boardName The new board name
+     * @param boardDesc The new board description
+     */
+    public void editBoardDesc(HCSUser user, int boardId, String boardName, String boardDesc) {
+        Board board = soundboardDao.getBoard(boardId, false, false);
+        if (canEditBoard(user, board)) {
+            soundboardDao.editBoardDesc(boardId, boardName, boardDesc);
+        }else {
+            throw new ForbiddenException();
+        }
+    }
+
+    /**
      * Creates a new soundboard
      * @param user The user creating the soundboard.
      * @return The id of the new board.
@@ -170,4 +186,5 @@ public class SoundboardService {
     private boolean canEditBoard(HCSUser user, Board board) {
         return user.isAdmin() || board.getOwnerName().equals(user.getUsername());
     }
+
 }

@@ -204,6 +204,17 @@ public class SoundboardDAO {
         updateBoardVersion(boardId);
     }
 
+    /**
+     * Change board name and board description
+     * @param boardId The boardId of the board in question.
+     * @param boardName The new board name
+     * @param boardDesc The new board description
+     */
+    @Transactional
+    public void editBoardDesc(int boardId, String boardName, String boardDesc) {
+        jdbcTemplate.update("UPDATE board_version SET title = ?, description = ? " +
+                "WHERE boardId = ? AND shared = FALSE", boardName, boardDesc, boardId);
+    }
 
     /**
      * Creates a new board record with the given owner
@@ -280,4 +291,6 @@ public class SoundboardDAO {
                 new Object[]{username},
                 this::boardMapper);
     }
+
+
 }

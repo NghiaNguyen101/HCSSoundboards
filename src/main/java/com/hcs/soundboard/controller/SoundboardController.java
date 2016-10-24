@@ -178,10 +178,13 @@ public class SoundboardController extends BaseController {
 
     @RequestMapping(value = "/board/{boardId:.+}/edit-board", method = RequestMethod.POST)
     public String editBoard(@PathVariable int boardId,
+                            @RequestParam("boardName") String boardName,
+                            @RequestParam("boardDesc") String boardDesc,
                             @RequestParam("soundId") List<Integer> soundIds,
                             @RequestParam(value = "deleted", required = false) List<Integer> deletedIds,
                             @RequestParam("name") List<String> names,
                             @RequestParam("originalName") List<String> originalNames) throws IOException {
+        soundboardService.editBoardDesc(getUser(), boardId, boardName, boardDesc);
         soundboardService.editSoundNames(getUser(), soundIds, names, originalNames, boardId);
         if (!CollectionUtils.isEmpty(deletedIds))
             soundboardService.removeSoundsFromBoard(getUser(), deletedIds, boardId);

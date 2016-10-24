@@ -6,11 +6,12 @@
 
 <hcs:standard-page title="Edit Soundboard" page="create">
     <div class="jumbotron">
-        <h1><c:out value="${version.title}"/></h1>
-        <p class="lead"><c:out value="${version.description}"/></p>
+
     </div>
     <div id="buttons">
         <hcs:form action="/board/${board.id}/edit-board" method="post">
+            <h1><input type="text" name="boardName" value="${version.title}"/></h1>
+            <p class="lead"><input type="text" name="boardDesc" value="${version.description}"></p>
             <c:forEach var="sound" items="${version.sounds}">
                 <p>
                     <input type="hidden" name="soundId" value="${sound.id}">
