@@ -1,17 +1,40 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="/includes.jsp" %>
 
-<hcs:standard-page title="HCS Soundboards" page="home">
-    <div class="jumbotron">
-        <h1>HCS Soundboards</h1>
-        <p class="lead">View soundboards and create your own.</p>
-        <br>
-        <h2> Error Page</h2>
-        <br>
-        <p> ${msg}</p>
-        <br>
-        <h2>Search??</h2>
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="HCS Soundboards">
+    <meta name="author" content="HCS">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.2.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.2.1/bootstrap-social.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <title>${title}</title>
+    <script>
+        $(document).ready(function () {
+            //play Wow, that was weird
+            //playSound(9);
+        });
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container main">
+        <div class="navbar-header">
+            <a class="navbar-brand logo" href="/"><img id="logo" src="https://s14.postimg.org/9y58owu0x/hcs.png"><!--HCS Soundboards--></a>
+        </div>
     </div>
-
-
-</hcs:standard-page>
+</nav>
+    <div class="jumbotron">
+        <h1>Opps, We couldn't find that page</h1>
+        <p class="lead"> Error: ${msg}</p>
+        <h2>Try searching or go back to <a href="/">HCSSoundboards</a> home page</h2>
+        <br>
+    </div>
+</body>
