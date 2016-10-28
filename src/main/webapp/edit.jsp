@@ -8,10 +8,10 @@
     <div class="jumbotron">
 
     </div>
-    <div id="buttons">
+    <div id="buttons-edit">
         <hcs:form action="/board/${board.id}/edit-board" method="post">
-            <h1><input type="text" name="boardName" value="${version.title}"/></h1>
-            <p class="lead"><input type="text" name="boardDesc" value="${version.description}"></p>
+            <h1><input type="text" class="edit-text" name="boardName" value="${version.title}"/></h1>
+            <p class="lead"><input type="text" class="edit-text" name="boardDesc" value="${version.description}"></p>
             <c:forEach var="sound" items="${version.sounds}">
                 <p>
                     <input type="hidden" name="soundId" value="${sound.id}">
@@ -28,7 +28,7 @@
         <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/upload">
             <input class="btn" type="file" accept="audio/*" capture="microphone" name="sounds" required="required"
                    multiple/>
-            <input class="btn" type="submit"/>
+            <input class="btn" type="submit" value="Upload Sounds"/>
         </hcs:form>
     </div>
     <div>

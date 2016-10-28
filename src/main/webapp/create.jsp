@@ -13,8 +13,8 @@
                        required="required" autocomplete="off" autofocus/>
             </div>
             <div class="form-group">
-                <textarea class="form-control" rows="5" placeholder="Soundboard Description"
-                          name="description"></textarea>
+                <input type="text" class="form-control" placeholder="Soundboard Description"
+                          name="description">
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Create Soundboard"/>

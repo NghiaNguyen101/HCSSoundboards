@@ -11,7 +11,7 @@
         <p class="lead"><c:out value="${version.description}"/></p>
         <p class="lead">By <hcs:user username="${board.ownerName}"/></p>
     </div>
-    <div id="buttons">
+    <div id="buttons-view">
         <c:forEach var="sound" items="${version.sounds}">
             <hcs:sound-button sound="${sound}" />
         </c:forEach>
