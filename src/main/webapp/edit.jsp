@@ -15,10 +15,14 @@
             <c:forEach var="sound" items="${version.sounds}">
                 <p>
                     <input type="hidden" name="soundId" value="${sound.id}">
-                    <input type="checkbox" name="deleted" value="${sound.id}">
+                    <%--<input type="checkbox" name="deleted" value="${sound.id}"> --%>
+                    <hcs:play-button sound="${sound}"/>
+                    &nbsp
                     <input type="hidden" name="originalName" value="${sound.name}">
                     <input type="text" name="name" value="${sound.name}">
-                    <hcs:play-button sound="${sound}"/>
+                    &nbsp
+                    <hcs:trash-button sound="${sound}"/>
+
                 </p>
             </c:forEach>
             <input type="submit" value="Submit Changes">

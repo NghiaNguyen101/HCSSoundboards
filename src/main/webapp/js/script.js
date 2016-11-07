@@ -75,9 +75,17 @@ $(document).ready(function () {  
     });
  });
 
+var current;
 function playSound(soundId) {
-    new Audio('/sound/' + soundId).play()
+    current = new Audio('/sound/' + soundId)
+    current.play()
+
 }
+
+function stopSound() {
+    current.pause()
+}
+
 function randomSounds() {
     var sounds = $('audio');
     var sound = sounds[Math.floor(Math.random() * sounds.length)];
