@@ -18,6 +18,7 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <li class="${page == 'about' ? 'active' : ''}"><a href="/about">About Us</a></li>
                 <li class="${page == 'create' ? 'active' : ''}"><a href="/create">Create</a></li>
                 <li class="${page == 'browse' ? 'active' : ''}"><a href="/browse">Browse</a></li>
                 <c:choose>
