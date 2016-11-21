@@ -59,6 +59,46 @@ $(document).ready(function () {  
         });
     });
 
+    /*
+     * Send report with Ajax
+     */
+    /*
+    $("#sendReport").click(function () {
+        var boardId = $("#boardId").val();
+        var reportTitle = $("#reportTitle").val();
+        var reportDesc = $("#reportDesc").val();
+        var data = {"boardId" : boardId, "reportTitle" : reportTitle, "reportDesc" : reportDesc};
+        //alert(boardId + "\n" + reportTitle + "\n" + reportDesc);
+        if (!confirm("Please comfirm to send the report"))
+            return;
+
+        $.ajax({
+            url: "/postAjax",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            type: "POST",
+            success: function (data) {
+                alert(data);
+            },
+            error: function (e) {
+                alert("Error: " + e);
+            }
+        });
+
+        alert("after");
+        /*$.post("/board/boardId/create-report", {
+            reportTitle: reportTitle,
+            reportDesc: reportDesc
+        }, function (data, status) {
+            if (data == "good"){
+                alert("Successful");
+            } else{
+                alert("fail");
+            }
+            alert(status);
+         });
+    });*/
+
     var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
     var codeIndex = 0;
 

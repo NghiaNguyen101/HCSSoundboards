@@ -191,6 +191,20 @@ public class SoundboardController extends BaseController {
         return String.format("redirect:/board/%d/edit", boardId);
     }
 
+    /*
+     * This URL hit when a user report a board
+     *
+     * @param boardId The board is in question
+     * @param reportTitle The title of the report
+     * @param reportDesc The description of the report
+     */
+     @RequestMapping(value = "/board/{boardId:.+}/create-report", method = RequestMethod.POST)
+     public String reportBoard(@PathVariable int boardId,
+                               @RequestParam("reportTitle") String reportTitle,
+                               @RequestParam("reportDesc") String reportDesc) throws IOException {
+         soundboardService.reportSoundBoard(getUser(), boardId, reportTitle, reportDesc);
+         return "redirect:/board/" + boardId;
+     }
     private InputStream getInputStream(MultipartFile file) {
         try {
             return file.getInputStream();
