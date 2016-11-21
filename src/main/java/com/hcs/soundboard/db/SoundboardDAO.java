@@ -292,5 +292,15 @@ public class SoundboardDAO {
                 this::boardMapper);
     }
 
+    /*
+     * Report the soundboard
+     *
+     * Create a new entry in table report_board with column resolved is 0
+     */
+    @Transactional
+    public void reportSoundBoard(String reportUser, int boardId, String reportTitle, String reportDesc){
+        jdbcTemplate.update("INSERT  INTO report_board (boardId, reportUser ,reportTitle, reportDesc, reportDate) " +
+                "VALUE (?, ?, ?, ?, NOW())", boardId, reportUser, reportTitle, reportDesc);
+    }
 
 }
