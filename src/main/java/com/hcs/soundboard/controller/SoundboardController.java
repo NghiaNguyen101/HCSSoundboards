@@ -205,6 +205,27 @@ public class SoundboardController extends BaseController {
          soundboardService.reportSoundBoard(getUser(), boardId, reportTitle, reportDesc);
          return "redirect:/board/" + boardId;
      }
+
+    @RequestMapping("/all-report")
+    public ModelAndView getReports(){
+        ModelAndView mav = new ModelAndView("all-report");
+        mav.addObject("reports", soundboardService.getAllReports());
+        return mav;
+    }
+
+    @RequestMapping(value = "/report/{reportId:.+}")
+    public ModelAndView handleReport(@PathVariable int reportId){
+        ModelAndView mav = new ModelAndView("report");
+        mav.addObject("report", soundboardService.getReport(reportId));
+        return mav;
+    }
+
+    @RequestMapping(value = "report/{reportId:.+}/resolved", method = RequestMethod.POST)
+    public String resolvedReport(@PathVariable int reportId){
+        soundboardService.resolvedReport(reportId);
+        return "redirect:/all-report";
+    }
+
     private InputStream getInputStream(MultipartFile file) {
         try {
             return file.getInputStream();

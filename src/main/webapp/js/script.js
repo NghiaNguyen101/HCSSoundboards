@@ -59,6 +59,12 @@ $(document).ready(function () {  
         });
     });
 
+    $("#resolved_report").submit(function () {
+        if (!confirm("Confirm Resolved this report?"))
+            return false;
+        return true;
+    });
+
     /*
      * Send report with Ajax
      */
