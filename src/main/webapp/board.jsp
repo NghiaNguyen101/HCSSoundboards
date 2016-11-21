@@ -35,11 +35,12 @@
                     <div class="modal-body">
                         <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/create-report">
                             <input class="form-control" type="text" name="reportTitle" id="reportTitle"
-                                   placeholder="Report Title" required="required" style="width:100%;"/>
+                                   placeholder="Report Title" required="required"
+                                   maxlength="128" style="width:100%;"/>
                             <br/>
                             <textarea class="form-control" rows="5" name="reportDesc" id="reportDesc"
                                       placeholder="Tell us about it..." required="required"
-                                style="width:100%; resize: none;"></textarea>
+                                maxlength="512" style="width:100%; resize: none;"></textarea>
                             <br/>
                             <input class="btn btn-info btn-lg" type="submit" value="Send Report"/>
                         </hcs:form>

@@ -64,11 +64,13 @@ CREATE TABLE `soundboard`.`report_board` (
    `reportTitle` VARCHAR(128) NOT NULL,
    `reportDesc` VARCHAR(512) NOT NULL,
    `reportUser` VARCHAR(45) NOT NULL,
+   `boardOwner` VARCHAR(45) NOT NULL,
    `resolved` TINYINT(1) NOT NULL DEFAULT 0,
    `reportDate` TIMESTAMP NOT NULL,
    PRIMARY KEY (`reportId`),
    INDEX `reportBoard_idx` (`boardId` ASC),
    INDEX `reportUser_idx_idx` (`reportUser` ASC),
+   INDEX `boardOwner_idx_idx` (`boardOwner` ASC),
    CONSTRAINT `reportBoard`
    FOREIGN KEY (`boardId`)
    REFERENCES `soundboard`.`board` (`id`)
@@ -78,6 +80,11 @@ CREATE TABLE `soundboard`.`report_board` (
    FOREIGN KEY (`reportUser`)
    REFERENCES `soundboard`.`user`
    (`username`)
+   ON DELETE NO ACTION
+   ON UPDATE NO ACTION,
+   CONSTRAINT `boardOwner_idx`
+   FOREIGN KEY (`boardOwner`)
+   REFERENCES `soundboard`.`user` (`username`)
    ON DELETE NO ACTION
    ON UPDATE NO ACTION
 );

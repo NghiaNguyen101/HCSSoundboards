@@ -24,6 +24,7 @@
                 <c:choose>
                     <c:when test="${user.member}">
                         <li class="${page == 'your-boards' ? 'active' : ''}"><a href="/your-boards">Your Boards</a></li>
+                        <li class="${page == 'all-report' ? 'active' : ''}"><a href="/all-report">Report</a></li>
                     </c:when>
                 </c:choose>
             </ul>
