@@ -199,6 +199,9 @@ public class SoundboardService {
     //Resolved the report
     public void resolvedReport(int reportId){ soundboardDao.resolvedReport(reportId); }
 
+    //Save Notes
+    public void saveNotesReport(int reportId, String notes) { soundboardDao.saveNotesReport(reportId, notes); }
+
     private boolean canViewBoard(HCSUser user, Board board) {
         return board.hasBeenShared() || canEditBoard(user, board);
     }

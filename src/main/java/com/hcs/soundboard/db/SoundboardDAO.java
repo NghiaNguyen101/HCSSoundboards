@@ -299,9 +299,12 @@ public class SoundboardDAO {
     public void reportSoundBoard(String reportUser, int boardId, String reportTitle, String reportDesc){
         String boardOwner = jdbcTemplate.queryForObject("SELECT ownerName FROM board WHERE id=?",
                 new Object[]{boardId} ,String.class);
+        String boardTitle = jdbcTemplate.queryForObject("SELECT title FROM board_version WHERE boardId=? " +
+                        "AND shared=1", new Object[]{boardId}, String.class);
 
-        jdbcTemplate.update("INSERT  INTO report_board (boardId, reportUser, boardOwner ,reportTitle, reportDesc, reportDate) " +
-                "VALUE (?, ?, ?, ?, ?, NOW())", boardId, reportUser, boardOwner, reportTitle, reportDesc);
+        jdbcTemplate.update("INSERT  INTO report_board (boardId, boardTitle, reportUser, boardOwner ,reportTitle," +
+                " reportDesc, reportDate) VALUE (?, ?,  ?, ?, ?, ?, NOW())",
+                boardId, boardTitle ,reportUser, boardOwner, reportTitle, reportDesc);
     }
 
 
@@ -311,18 +314,17 @@ public class SoundboardDAO {
      * @return list of report
      */
     public List<Report> getAllReports(){
-        return jdbcTemplate.query("SELECT reportId, boardId, reportUser, boardOwner, reportTitle, reportDesc, reportDate" +
+        return jdbcTemplate.query("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportTitle, reportDesc, reportDate, notes" +
                 " FROM report_board WHERE resolved=0 ORDER BY reportDate DESC", this::reportMapper);
     }
 
     /*
      * Get the report in question
-     *
      * @param reportId  the id of the report in question
      * @return the report in question
      */
     public Report getReport(int reportId){
-        return jdbcTemplate.queryForObject("SELECT reportId, boardId, reportUser, boardOwner, reportTitle, reportDesc, reportDate" +
+        return jdbcTemplate.queryForObject("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportTitle, reportDesc, reportDate, notes" +
                 " FROM report_board WHERE reportId=?", new Object[]{reportId}, this::reportMapper);
     }
 
@@ -338,11 +340,17 @@ public class SoundboardDAO {
     private Report reportMapper(ResultSet rs, int rn) throws SQLException {
         return new Report(rs.getInt("reportId"),
                           rs.getInt("boardId"),
+                          rs.getString("boardTitle"),
                           rs.getString("reportUser"),
                           rs.getString("boardOwner"),
                           rs.getString("reportTitle"),
                           rs.getString("reportDesc"),
-                          rs.getTimestamp("reportDate"));
+                          rs.getTimestamp("reportDate"),
+                          rs.getString("notes"));
     }
 
+    @Transactional
+    public void saveNotesReport(int reportId, String notes){
+        jdbcTemplate.update("UPDATE report_board SET notes=? WHERE reportId=?", notes, reportId);
+    }
 }

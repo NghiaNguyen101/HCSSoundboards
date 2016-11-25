@@ -157,3 +157,8 @@ div#buttons-view {
 .fast .toggle-group {
     transition: left 0.1s; -webkit-transition: left 0.1s;
 }
+
+/* for edit page, hide input until click
+#input_tile , #input_desc{
+    display: none;
+}*/

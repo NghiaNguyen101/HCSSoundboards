@@ -11,9 +11,11 @@ import java.util.Date;
 public class Report {
     private int reportId;
     private int boardId;
+    private String boardTitle;
     private String reportUser;
     private String boardOwner;
     private String reportTitle;
     private String reportDesc;
     private Date reportDate;
+    private String notes;
 }

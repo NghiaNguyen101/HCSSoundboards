@@ -59,51 +59,48 @@ $(document).ready(function () {  
         });
     });
 
-    $("#resolved_report").submit(function () {
-        if (!confirm("Confirm Resolved this report?"))
-            return false;
-        return true;
+    //Submit the resolved report form
+    $("#confirm_resolved").click(function () {
+        $("#resolved_report_form").submit();
     });
 
-    /*
-     * Send report with Ajax
-     */
-    /*
-    $("#sendReport").click(function () {
-        var boardId = $("#boardId").val();
-        var reportTitle = $("#reportTitle").val();
-        var reportDesc = $("#reportDesc").val();
-        var data = {"boardId" : boardId, "reportTitle" : reportTitle, "reportDesc" : reportDesc};
-        //alert(boardId + "\n" + reportTitle + "\n" + reportDesc);
-        if (!confirm("Please comfirm to send the report"))
-            return;
+    //Display warning to save notes, if changes
+    $("#report_notes").change(function () {
+        var original_notes = $("#oroginal_notes").val();
+        var new_notes = $("#report_notes").val();
+        if (new_notes != original_notes)
+            $("#warning_save_notes").removeClass("hidden");
+        else
+            $("#warning_save_notes").addClass("hidden");
 
-        $.ajax({
-            url: "/postAjax",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-            type: "POST",
+    });
+
+    //save report notes
+    $("#save_notes_button").click(function () {
+       // var reportId = $("#report_id").val();
+        var notes = $("#report_notes").val();
+        $("#save_notes_report_form").submit();
+       // alert(reportId + "\n" + notes + "\n" +"/report/" + reportId + "/save_notes");
+
+       /* $.ajax({
+            url: "/report/save_notes",
+            data: "reportId=" + reportId + "&notes=" + notes,
+            type: "GET",
             success: function (data) {
-                alert(data);
+                alert("Save successful");
             },
             error: function (e) {
                 alert("Error: " + e);
             }
-        });
+        });*/
+    });
+   /* $("#fixed_title").click(function () {
+        $("#fixed_title").css("display", "none");
+        $("#input_tile").css("display", "block");
+        $("#input_tile").focus();
+    });
+*/
 
-        alert("after");
-        /*$.post("/board/boardId/create-report", {
-            reportTitle: reportTitle,
-            reportDesc: reportDesc
-        }, function (data, status) {
-            if (data == "good"){
-                alert("Successful");
-            } else{
-                alert("fail");
-            }
-            alert(status);
-         });
-    });*/
 
     var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
     var codeIndex = 0;

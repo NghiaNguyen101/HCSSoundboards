@@ -2,7 +2,8 @@
 <%@ include file="/includes.jsp" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<hcs:standard-page title="Report" page="report">
+<hcs:standard-page title="Report" page="all-report">
+
     <c:forEach var="report" items="${reports}">
         <div>
             <p><a href="/report/${report.reportId}"><b><c:out value="${report.reportTitle}"/></b></a></p>

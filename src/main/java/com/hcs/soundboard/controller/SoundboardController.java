@@ -226,6 +226,12 @@ public class SoundboardController extends BaseController {
         return "redirect:/all-report";
     }
 
+    @RequestMapping(value = "report/{reportId:.+}/save_notes", method = RequestMethod.POST)
+    public String saveNotesReport(@PathVariable int reportId, @RequestParam String notes){
+        soundboardService.saveNotesReport(reportId, notes);
+        return "redirect:/report/"+reportId;
+    }
+
     private InputStream getInputStream(MultipartFile file) {
         try {
             return file.getInputStream();
