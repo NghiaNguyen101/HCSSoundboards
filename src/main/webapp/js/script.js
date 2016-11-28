@@ -77,22 +77,26 @@ $(document).ready(function () {  
 
     //save report notes
     $("#save_notes_button").click(function () {
-       // var reportId = $("#report_id").val();
         var notes = $("#report_notes").val();
         $("#save_notes_report_form").submit();
-       // alert(reportId + "\n" + notes + "\n" +"/report/" + reportId + "/save_notes");
+    });
 
-       /* $.ajax({
-            url: "/report/save_notes",
-            data: "reportId=" + reportId + "&notes=" + notes,
-            type: "GET",
-            success: function (data) {
-                alert("Save successful");
-            },
-            error: function (e) {
-                alert("Error: " + e);
-            }
-        });*/
+    //radio box for report "Other"
+    $("[id^=report_], #other_report").change(function () {
+        if (this.id.startsWith("report_")){
+            $("#other_report_text").prop("disabled", true);
+        } else{
+            $("#other_report_text").prop("disabled", false);
+        }
+    });
+
+    //on submit the report, check for other, detail report
+    $("#submit_report").submit(function () {
+        if ($("#other_report").prop("checked") == true){
+            $("#other_report").val($("#other_report_text").val());
+            $("#other_report_text").prop("disabled", true);
+        }
+        return true;
     });
    /* $("#fixed_title").click(function () {
         $("#fixed_title").css("display", "none");

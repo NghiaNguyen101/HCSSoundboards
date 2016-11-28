@@ -66,7 +66,6 @@ CREATE TABLE `soundboard`.`report_board` (
    `reportId` INT NOT NULL AUTO_INCREMENT,
    `boardId` INT NOT NULL,
    `boardTitle` VARCHAR(100) NOT NULL,
-   `reportTitle` VARCHAR(128) NOT NULL,
    `reportDesc` VARCHAR(512) NOT NULL,
    `reportUser` VARCHAR(45) NOT NULL,
    `boardOwner` VARCHAR(45) NOT NULL,

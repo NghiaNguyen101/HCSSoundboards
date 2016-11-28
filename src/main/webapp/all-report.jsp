@@ -6,7 +6,7 @@
 
     <c:forEach var="report" items="${reports}">
         <div>
-            <p><a href="/report/${report.reportId}"><b><c:out value="${report.reportTitle}"/></b></a></p>
+            <p><a href="/report/${report.reportId}"><b>Report #<c:out value="${report.reportId}"/></b></a></p>
             <p><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${report.reportDate}"/></p>
             <p>By <hcs:user username="${report.reportUser}"/></p>
             <hr/>

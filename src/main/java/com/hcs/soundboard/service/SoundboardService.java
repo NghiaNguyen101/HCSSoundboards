@@ -183,8 +183,8 @@ public class SoundboardService {
     /*
      * Report the soundboard
      */
-    public void reportSoundBoard(HCSUser user, int boardId, String reportTitle, String reportDesc){
-        soundboardDao.reportSoundBoard(user.getUsername(), boardId, reportTitle, reportDesc);
+    public void reportSoundBoard(HCSUser user, int boardId, String reportDesc){
+        soundboardDao.reportSoundBoard(user.getUsername(), boardId, reportDesc);
     }
 
 

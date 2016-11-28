@@ -296,15 +296,15 @@ public class SoundboardDAO {
      * Create a new entry in table report_board with column resolved is 0
      */
     @Transactional
-    public void reportSoundBoard(String reportUser, int boardId, String reportTitle, String reportDesc){
+    public void reportSoundBoard(String reportUser, int boardId, String reportDesc){
         String boardOwner = jdbcTemplate.queryForObject("SELECT ownerName FROM board WHERE id=?",
                 new Object[]{boardId} ,String.class);
         String boardTitle = jdbcTemplate.queryForObject("SELECT title FROM board_version WHERE boardId=? " +
                         "AND shared=1", new Object[]{boardId}, String.class);
 
-        jdbcTemplate.update("INSERT  INTO report_board (boardId, boardTitle, reportUser, boardOwner ,reportTitle," +
-                " reportDesc, reportDate) VALUE (?, ?,  ?, ?, ?, ?, NOW())",
-                boardId, boardTitle ,reportUser, boardOwner, reportTitle, reportDesc);
+        jdbcTemplate.update("INSERT  INTO report_board (boardId, boardTitle, reportUser, boardOwner ," +
+                " reportDesc, reportDate) VALUE (?, ?, ?, ?, ?, NOW())",
+                boardId, boardTitle ,reportUser, boardOwner, reportDesc);
     }
 
 
@@ -314,7 +314,7 @@ public class SoundboardDAO {
      * @return list of report
      */
     public List<Report> getAllReports(){
-        return jdbcTemplate.query("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportTitle, reportDesc, reportDate, notes" +
+        return jdbcTemplate.query("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportDesc, reportDate, notes" +
                 " FROM report_board WHERE resolved=0 ORDER BY reportDate DESC", this::reportMapper);
     }
 
@@ -324,7 +324,7 @@ public class SoundboardDAO {
      * @return the report in question
      */
     public Report getReport(int reportId){
-        return jdbcTemplate.queryForObject("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportTitle, reportDesc, reportDate, notes" +
+        return jdbcTemplate.queryForObject("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportDesc, reportDate, notes" +
                 " FROM report_board WHERE reportId=?", new Object[]{reportId}, this::reportMapper);
     }
 
@@ -343,7 +343,6 @@ public class SoundboardDAO {
                           rs.getString("boardTitle"),
                           rs.getString("reportUser"),
                           rs.getString("boardOwner"),
-                          rs.getString("reportTitle"),
                           rs.getString("reportDesc"),
                           rs.getTimestamp("reportDate"),
                           rs.getString("notes"));

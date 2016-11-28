@@ -200,9 +200,9 @@ public class SoundboardController extends BaseController {
      */
      @RequestMapping(value = "/board/{boardId:.+}/create-report", method = RequestMethod.POST)
      public String reportBoard(@PathVariable int boardId,
-                               @RequestParam("reportTitle") String reportTitle,
                                @RequestParam("reportDesc") String reportDesc) throws IOException {
-         soundboardService.reportSoundBoard(getUser(), boardId, reportTitle, reportDesc);
+         System.out.println(reportDesc);
+         soundboardService.reportSoundBoard(getUser(), boardId, reportDesc);
          return "redirect:/board/" + boardId;
      }
 

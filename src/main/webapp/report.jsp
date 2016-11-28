@@ -4,7 +4,7 @@
 
 <hcs:standard-page title="Report ${report.reportId}" page="board">
     <div class="jumbotron">
-        <h1><c:out value="${report.reportTitle}"/></h1>
+        <h1>Report #<c:out value="${report.reportId}"/></h1>
         <p class="lead">Date: <fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${report.reportDate}"/></p>
         <p class="lead">By <hcs:user username="${report.reportUser}"/></p>
         <p class="lead">For board <a href="/board/${report.boardId}">${report.boardTitle}</a>
@@ -12,7 +12,7 @@
     </div>
     <div>
         <h4>Detail:</h4>
-        <textarea class="form-control" disabled="disabled" rows="4" style="resize: none">${report.reportDesc}"</textarea>
+        <textarea class="form-control" disabled="disabled" rows="3" style="resize: none">${report.reportDesc}</textarea>
     </div>
 
     <hcs:form action="/report/${report.reportId}/resolved" method="post" id="resolved_report_form">
@@ -22,7 +22,7 @@
     <h4>Notes:</h4>
     <hcs:form id="save_notes_report_form" action="/report/${report.reportId}/save_notes" method="post">
         <input id="oroginal_notes" type="hidden" value="${report.notes}">
-        <textarea id="report_notes" class="form-control" name="notes" style="resize: none" rows="4">${report.notes}</textarea>
+        <textarea id="report_notes" class="form-control" name="notes" style="resize: none" rows="3">${report.notes}</textarea>
     </hcs:form>
     <!--<input type="hidden" id="report_id" value="${report.reportId}"> -->
     <p id="warning_save_notes" class="hidden bg-warning text-danger">Your notes is updated. Please save your notes!</p>
