@@ -18,6 +18,6 @@
 
     </label>
 </span>
-<audio id="sound${sound.id}" preload="auto" src="/sound/${sound.id}"></audio>
+<audio id="sound${sound.id}" preload="auto" src="/sound/${sound.id}" onended="switchPlay(${sound.id})"></audio>
 
 <%--<input type="checkbox" checked data-toggle="toggle" data-on="<i class='fa fa-play'></i> Play" data-off="<i class='fa fa-pause'></i> Pause">--%>

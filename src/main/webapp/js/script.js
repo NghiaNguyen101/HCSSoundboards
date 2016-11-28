@@ -82,9 +82,28 @@ function playSound(soundId) {
 
 }
 
+
 function stopSound() {
     current.pause()
+
 }
+
+function switchDelete(checkbox, value) {
+    if (checkbox.checked == false)  {
+        document.getElementById("deleteLabel_" + value).className = "btn btn-default";
+        document.getElementById("checkedState_" + value).className = "glyphicon glyphicon-unchecked";
+    }
+    else {
+        document.getElementById("deleteLabel_" + value).className = "btn btn-danger";
+        document.getElementById("checkedState_" + value).className = "glyphicon glyphicon-check";
+    }
+}
+
+/*function switchPlay(soundId) {
+    alert("halp")
+    document.getElementById(soundId).checked = true;
+
+}*/
 
 function randomSounds() {
     var sounds = $('audio');
