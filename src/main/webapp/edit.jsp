@@ -30,7 +30,7 @@
         </hcs:form>
     </div>
 
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Upload sounds</button>
+    <button type="button" class="btn" style="margin-bottom: 10px" data-toggle="modal" data-target="#myModal">Add Sounds</button>
 
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
@@ -40,17 +40,17 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Upload Sounds</h4>
+                    <h4 class="modal-title">Add Sounds</h4>
                 </div>
                 <div class="modal-body">
                     <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/upload">
                         <input class="btn" type="file" accept="audio/*" capture="microphone" name="sounds" required="required"
                                multiple/>
-                        <input class="btn" type="submit" value="Upload Sounds"/>
+                        &nbsp&nbsp&nbsp<input class="btn" type="submit" value="Upload Sounds"/>
                     </hcs:form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
 
@@ -68,7 +68,7 @@
             </c:when>
             <c:otherwise>
                 <hcs:form method="post" action="/board/${board.id}/share">
-                    <input class="btn btn-primary" type="submit" value="Share Soundboard">
+                    <input class="btn" type="submit" value="Share Soundboard">
                 </hcs:form>
                 <a href="/board/${board.id}/preview">Preview Changes</a>
             </c:otherwise>

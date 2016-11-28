@@ -118,17 +118,11 @@ $(document).ready(function () {  
     });
  });
 
-var current;
+//var current;
 function playSound(soundId) {
-    current = new Audio('/sound/' + soundId)
-    current.play()
-
-}
-
-
-function stopSound() {
-    current.pause()
-
+    //current = new Audio('/sound/' + soundId)
+    //current.play()
+    new Audio('/sound/' + soundId).play()
 }
 
 function switchDelete(checkbox, value) {
