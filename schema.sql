@@ -21,6 +21,10 @@ CREATE INDEX fk_username
 CREATE UNIQUE INDEX uni_username_role
   ON role (role, username);
 
+insert into user value ('admin', '$2a$10$IGo0Ey7Pxe5wipaBQ3CSauwKKcLmL64YPEx.IqKo3ozCVIXJ4BihO', 1);
+insert into role (username, role) value ('admin', 'ROLE_ADMIN');
+insert into role (username, role) value ('admin', 'ROLE_USER');
+
 # Application logic tables
 CREATE TABLE sound
 (
