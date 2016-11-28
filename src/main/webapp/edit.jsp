@@ -56,7 +56,6 @@
         </div>
     </div>
 
-
     <div>
         <c:choose>
             <c:when test="${version.sounds.size() == 0}">
