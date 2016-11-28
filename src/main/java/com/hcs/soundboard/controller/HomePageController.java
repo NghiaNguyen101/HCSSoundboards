@@ -13,4 +13,13 @@ public class HomePageController extends BaseController {
     public String index() {
         return "index";
     }
+
+    /**
+     * Handles requests for the about page.
+     * @return "about"
+     */
+    @RequestMapping("/about")
+    public String about() {
+        return "about";
+    }
 }

@@ -29,13 +29,35 @@
             </div>
         </hcs:form>
     </div>
-    <div>
-        <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/upload">
-            <input class="btn" type="file" accept="audio/*" capture="microphone" name="sounds" required="required"
-                   multiple/>
-            <input class="btn" type="submit" value="Upload Sounds"/>
-        </hcs:form>
+
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Upload sounds</button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Upload Sounds</h4>
+                </div>
+                <div class="modal-body">
+                    <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/upload">
+                        <input class="btn" type="file" accept="audio/*" capture="microphone" name="sounds" required="required"
+                               multiple/>
+                        <input class="btn" type="submit" value="Upload Sounds"/>
+                    </hcs:form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
     </div>
+
+
     <div>
         <c:choose>
             <c:when test="${version.sounds.size() == 0}">

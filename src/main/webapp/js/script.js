@@ -59,6 +59,49 @@ $(document).ready(function () {  
         });
     });
 
+    //Submit the resolved report form
+    $("#confirm_resolved").click(function () {
+        $("#resolved_report_form").submit();
+    });
+
+    //Display warning to save notes, if changes
+    $("#report_notes").change(function () {
+        var original_notes = $("#oroginal_notes").val();
+        var new_notes = $("#report_notes").val();
+        if (new_notes != original_notes)
+            $("#warning_save_notes").removeClass("hidden");
+        else
+            $("#warning_save_notes").addClass("hidden");
+
+    });
+
+    //save report notes
+    $("#save_notes_button").click(function () {
+       // var reportId = $("#report_id").val();
+        var notes = $("#report_notes").val();
+        $("#save_notes_report_form").submit();
+       // alert(reportId + "\n" + notes + "\n" +"/report/" + reportId + "/save_notes");
+
+       /* $.ajax({
+            url: "/report/save_notes",
+            data: "reportId=" + reportId + "&notes=" + notes,
+            type: "GET",
+            success: function (data) {
+                alert("Save successful");
+            },
+            error: function (e) {
+                alert("Error: " + e);
+            }
+        });*/
+    });
+   /* $("#fixed_title").click(function () {
+        $("#fixed_title").css("display", "none");
+        $("#input_tile").css("display", "block");
+        $("#input_tile").focus();
+    });
+*/
+
+
     var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
     var codeIndex = 0;
 

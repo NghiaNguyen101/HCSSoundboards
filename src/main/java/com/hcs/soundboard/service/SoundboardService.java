@@ -3,6 +3,7 @@ package com.hcs.soundboard.service;
 import com.hcs.soundboard.data.Board;
 import com.hcs.soundboard.data.HCSUser;
 import com.hcs.soundboard.data.SoundFile;
+import com.hcs.soundboard.data.Report;
 import com.hcs.soundboard.data.SoundMetadata;
 import com.hcs.soundboard.db.SoundboardDAO;
 import com.hcs.soundboard.exception.ForbiddenException;
@@ -178,6 +179,28 @@ public class SoundboardService {
         }
         throw new ForbiddenException();
     }
+
+    /*
+     * Report the soundboard
+     */
+    public void reportSoundBoard(HCSUser user, int boardId, String reportTitle, String reportDesc){
+        soundboardDao.reportSoundBoard(user.getUsername(), boardId, reportTitle, reportDesc);
+    }
+
+
+    //Get all unresolved reports
+    public List<Report> getAllReports(){
+        return soundboardDao.getAllReports();
+    }
+
+    //Get the report in question
+    public Report getReport(int reportId) { return soundboardDao.getReport(reportId); }
+
+    //Resolved the report
+    public void resolvedReport(int reportId){ soundboardDao.resolvedReport(reportId); }
+
+    //Save Notes
+    public void saveNotesReport(int reportId, String notes) { soundboardDao.saveNotesReport(reportId, notes); }
 
     private boolean canViewBoard(HCSUser user, Board board) {
         return board.hasBeenShared() || canEditBoard(user, board);
