@@ -66,7 +66,7 @@ $(document).ready(function () {  
 
     //Display warning to save notes, if changes
     $("#report_notes").change(function () {
-        var original_notes = $("#oroginal_notes").val();
+        var original_notes = $("#original_notes").val();
         var new_notes = $("#report_notes").val();
         if (new_notes != original_notes)
             $("#warning_save_notes").removeClass("hidden");
@@ -98,13 +98,6 @@ $(document).ready(function () {  
         }
         return true;
     });
-   /* $("#fixed_title").click(function () {
-        $("#fixed_title").css("display", "none");
-        $("#input_tile").css("display", "block");
-        $("#input_tile").focus();
-    });
-*/
-
 
     var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
     var codeIndex = 0;
@@ -122,10 +115,7 @@ $(document).ready(function () {  
     });
  });
 
-//var current;
 function playSound(soundId) {
-    //current = new Audio('/sound/' + soundId)
-    //current.play()
     new Audio('/sound/' + soundId).play()
 }
 
@@ -139,12 +129,6 @@ function switchDelete(checkbox, value) {
         document.getElementById("checkedState_" + value).className = "glyphicon glyphicon-check";
     }
 }
-
-/*function switchPlay(soundId) {
-    alert("halp")
-    document.getElementById(soundId).checked = true;
-
-}*/
 
 function randomSounds() {
     var sounds = $('audio');

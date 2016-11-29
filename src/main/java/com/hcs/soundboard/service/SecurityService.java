@@ -29,7 +29,7 @@ public class SecurityService {
     private UserDetailsService userDetailsService;
 
     @Autowired
-    AccountDAO accountDao;
+    private AccountDAO accountDao;
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 

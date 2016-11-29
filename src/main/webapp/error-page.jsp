@@ -15,13 +15,7 @@
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.2.1/bootstrap-social.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <title>${title}</title>
-    <script>
-        $(document).ready(function () {
-            //play Wow, that was weird
-            //playSound(9);
-        });
-    </script>
+    <title>HCS 404</title>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-static-top">
@@ -32,7 +26,7 @@
     </div>
 </nav>
     <div class="jumbotron">
-        <h1>Opps, We couldn't find that page</h1>
+        <h1>Oops, We couldn't find that page</h1>
         <p class="lead"> Error: ${msg}</p>
         <h2>Try searching or go back to <a href="/">HCSSoundboards</a> home page</h2>
         <br>

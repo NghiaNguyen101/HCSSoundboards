@@ -42,10 +42,6 @@ body #buttons-edit .form-control {
 
 }
 
-/*
-.btn-primary {
-    background-color: mediumvioletred;
-}*/
 body #createButton {
     width: 300px;
     justify-content: center;
@@ -79,15 +75,7 @@ body .footer {
 #fineprint {
     font-size: 90%;
 }
-/*
-input[type=submit] {
-    background: url(https://s19.postimg.org/lc46pa8kj/Sign_In.png);
-    border: 0;
-    display: block;
-    height: 42px;
-    width: 113px;
-}
-*/
+
 #login label {
     justify-content: center;
     align-content: center;
@@ -104,11 +92,10 @@ input[type=submit] {
     vertical-align: middle;
     padding-top: 8px;
 }
+
 .navbar .nav .divider-vertical {
     width: 1px;
-   /* height: 37px;*/
     background-color: darkblue;
-    /*background-image: url("img/nav-div.jpg");*/
 }
 
 .navbar-static-top {
@@ -129,11 +116,6 @@ div#buttons-view {
     margin: 0 auto;
 }
 
-/*.navbar-default {
-    padding: 0 8x;
-    height: 40px;
-    line height: 40px;
-}*/
 .btn.active {
     display: none;
 }
@@ -155,10 +137,7 @@ div#buttons-view {
 }
 
 .fast .toggle-group {
-    transition: left 0.1s; -webkit-transition: left 0.1s;
+    transition: left 0.1s;
+    -webkit-transition: left 0.1s;
 }
 
-/* for edit page, hide input until click
-#input_tile , #input_desc{
-    display: none;
-}*/

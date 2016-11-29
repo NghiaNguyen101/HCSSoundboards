@@ -1,8 +1,10 @@
 package com.hcs.soundboard.db;
 
-import com.hcs.soundboard.data.*;
+import com.hcs.soundboard.data.Board;
+import com.hcs.soundboard.data.BoardVersion;
+import com.hcs.soundboard.data.SoundFile;
+import com.hcs.soundboard.data.SoundMetadata;
 import com.hcs.soundboard.exception.NotFoundException;
-import org.hibernate.transform.ResultTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -204,7 +206,8 @@ public class SoundboardDAO {
 
     /**
      * Change board name and board description
-     * @param boardId The boardId of the board in question.
+     *
+     * @param boardId   The boardId of the board in question.
      * @param boardName The new board name
      * @param boardDesc The new board description
      */
@@ -288,68 +291,5 @@ public class SoundboardDAO {
                         "ORDER BY s.updateDate DESC",
                 new Object[]{username},
                 this::boardMapper);
-    }
-
-    /*
-     * Report the soundboard
-     *
-     * Create a new entry in table report_board with column resolved is 0
-     */
-    @Transactional
-    public void reportSoundBoard(String reportUser, int boardId, String reportDesc){
-        String boardOwner = jdbcTemplate.queryForObject("SELECT ownerName FROM board WHERE id=?",
-                new Object[]{boardId} ,String.class);
-        String boardTitle = jdbcTemplate.queryForObject("SELECT title FROM board_version WHERE boardId=? " +
-                        "AND shared=1", new Object[]{boardId}, String.class);
-
-        jdbcTemplate.update("INSERT  INTO report_board (boardId, boardTitle, reportUser, boardOwner ," +
-                " reportDesc, reportDate) VALUE (?, ?, ?, ?, ?, NOW())",
-                boardId, boardTitle ,reportUser, boardOwner, reportDesc);
-    }
-
-
-    /*
-     * Get all unresolved reports
-     *
-     * @return list of report
-     */
-    public List<Report> getAllReports(){
-        return jdbcTemplate.query("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportDesc, reportDate, notes" +
-                " FROM report_board WHERE resolved=0 ORDER BY reportDate DESC", this::reportMapper);
-    }
-
-    /*
-     * Get the report in question
-     * @param reportId  the id of the report in question
-     * @return the report in question
-     */
-    public Report getReport(int reportId){
-        return jdbcTemplate.queryForObject("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportDesc, reportDate, notes" +
-                " FROM report_board WHERE reportId=?", new Object[]{reportId}, this::reportMapper);
-    }
-
-    /*
-     * Update the report to resolved
-     *
-     * @param reportId the id of the report to be resolved
-     */
-    public void resolvedReport(int reportId){
-        jdbcTemplate.update("UPDATE report_board SET resolved=1 WHERE reportId=?", reportId);
-    }
-
-    private Report reportMapper(ResultSet rs, int rn) throws SQLException {
-        return new Report(rs.getInt("reportId"),
-                          rs.getInt("boardId"),
-                          rs.getString("boardTitle"),
-                          rs.getString("reportUser"),
-                          rs.getString("boardOwner"),
-                          rs.getString("reportDesc"),
-                          rs.getTimestamp("reportDate"),
-                          rs.getString("notes"));
-    }
-
-    @Transactional
-    public void saveNotesReport(int reportId, String notes){
-        jdbcTemplate.update("UPDATE report_board SET notes=? WHERE reportId=?", notes, reportId);
     }
 }

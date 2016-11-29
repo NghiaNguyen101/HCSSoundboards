@@ -4,12 +4,16 @@
 
 <hcs:standard-page title="Report" page="all-report">
 
-    <c:forEach var="report" items="${reports}">
+    <%--@elvariable id="reports" type="java.util.List<com.hcs.soundboard.data.Report>"--%>
+    <c:forEach var="report" items="${reports}" varStatus="loop">
         <div>
+            <c:if test="${loop.index != 0}">
+                <hr />
+            </c:if>
             <p><a href="/report/${report.reportId}"><b>Report #<c:out value="${report.reportId}"/></b></a></p>
             <p><fmt:formatDate type="both" dateStyle="short" timeStyle="short" value="${report.reportDate}"/></p>
+            <p><c:out value="${report.reportDesc}"/></p>
             <p>By <hcs:user username="${report.reportUser}"/></p>
-            <hr/>
         </div>
     </c:forEach>
 </hcs:standard-page>

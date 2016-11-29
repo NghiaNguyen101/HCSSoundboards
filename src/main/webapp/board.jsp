@@ -3,6 +3,7 @@
 
 <%--@elvariable id="board" type="com.hcs.soundboard.data.Board"--%>
 <%--@elvariable id="useShared" type="java.lang.Boolean"--%>
+<%--@elvariable id="user" type="com.hcs.soundboard.data.HCSUser"--%>
 <c:set var="version" value="${useShared ? board.sharedVersion : board.unsharedVersion}" />
 
 <hcs:standard-page title="${version.title}" page="board">
@@ -45,7 +46,7 @@
                             <input type="radio" name="reportDesc" value="Copyright issues" id="report_4">
                             <label for="report_4"> Copyright issues</label><br />
                             <input type="radio" name="reportDesc" value="other" id="other_report">
-                            <label for="other_report"> Other, more detail: </label>
+                            <label for="other_report"> Other, please explain: </label>
                             <input class="form-control" type="text" name="other_detail" id="other_report_text"
                                    disabled="disabled">
                             <br/>

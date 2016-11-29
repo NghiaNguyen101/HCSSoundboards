@@ -1,6 +1,7 @@
 package com.hcs.soundboard.controller;
 
 import com.hcs.soundboard.data.HCSUser;
+import com.hcs.soundboard.service.ReportService;
 import com.hcs.soundboard.service.SecurityService;
 import com.hcs.soundboard.service.SoundboardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class BaseController {
 
     @Autowired
     protected SecurityService securityService;
+
+    @Autowired
+    protected ReportService reportService;
 
     /**
      * This method gets the current user and makes it available in the JSP
