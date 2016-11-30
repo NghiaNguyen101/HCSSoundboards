@@ -12,12 +12,12 @@
         <hcs:form action="/login" method="post">
             <div class="form-group">
                 <input type="text" class="form-control login"
-                       placeholder="Username" name="username"
+                       placeholder="Username" name="username" maxlength="45"
                        required="required" autocomplete="off" autofocus/>
             </div>
             <div class="form-group">
                 <input type="password" class="form-control login"
-                       placeholder="Password" name="password"
+                       placeholder="Password" name="password" maxlength="60"
                        required="required" autocomplete="off"/>
             </div>
             <div class="form-group">

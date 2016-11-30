@@ -8,17 +8,17 @@
     <div class="form-signin">
         <hcs:form action="/register" method="post" id="register">
             <div class="form-group">
-                <input type="text" class="form-control"
+                <input type="text" class="form-control" maxlength="45"
                        placeholder="Username" name="username" id="username"
                        required="required" autocomplete="off" autofocus/>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control"
+                <input type="password" class="form-control" maxlength="60"
                        placeholder="Password" name="password" id="password"
                        required="required" autocomplete="off"/>
             </div>
             <div class="form-group">
-                <input type="password" class="form-control"
+                <input type="password" class="form-control" maxlength="60"
                        placeholder="Confirm Password" name="confirm-password" id="confirm-password"
                        required="required" autocomplete="off"/>
             </div>

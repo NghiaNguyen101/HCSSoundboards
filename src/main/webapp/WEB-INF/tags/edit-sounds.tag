@@ -3,11 +3,11 @@
 <%@ include file="/includes.jsp" %>
 
 <p class="edit-view">
-    <input type="hidden" name="soundId" value="${sound.id}">
+    <input type="hidden" name="soundId" value="${sound.id}"/>
     <hcs:play-button sound="${sound}"/>
     &nbsp
-    <input type="hidden" name="originalName" value="${sound.name}">
-    <input type="text" name="name" value="${sound.name}">
+    <input type="hidden" name="originalName" value="${sound.name}" maxlength="100"/>
+    <input type="text" name="name" value="${sound.name}" maxlength="100"/>
     &nbsp
     <hcs:trash-button sound="${sound}"/>
 

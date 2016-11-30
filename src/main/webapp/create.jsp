@@ -8,13 +8,13 @@
         </div>
         <div class="form-create">
             <div class="form-group">
-                <input type="text" class="form-control"
+                <input type="text" class="form-control" maxlength="100"
                        name="title" placeholder="Soundboard Title"
                        required="required" autocomplete="off" autofocus/>
             </div>
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Soundboard Description"
-                          name="description">
+                          name="description" maxlength="1000" />
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Create Soundboard"/>
