@@ -15,13 +15,7 @@
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/4.2.1/bootstrap-social.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css"/>
-    <title>${title}</title>
-    <script>
-        $(document).ready(function () {
-            //play Wow, that was weird
-            //playSound(9);
-        });
-    </script>
+    <title>HCS 404</title>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-static-top">

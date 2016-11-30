@@ -191,47 +191,6 @@ public class SoundboardController extends BaseController {
         return String.format("redirect:/board/%d/edit", boardId);
     }
 
-    /*
-     * This URL hit when a user report a board
-     *
-     * @param boardId The board is in question
-     * @param reportTitle The title of the report
-     * @param reportDesc The description of the report
-     */
-     @RequestMapping(value = "/board/{boardId:.+}/create-report", method = RequestMethod.POST)
-     public String reportBoard(@PathVariable int boardId,
-                               @RequestParam("reportTitle") String reportTitle,
-                               @RequestParam("reportDesc") String reportDesc) throws IOException {
-         soundboardService.reportSoundBoard(getUser(), boardId, reportTitle, reportDesc);
-         return "redirect:/board/" + boardId;
-     }
-
-    @RequestMapping("/all-report")
-    public ModelAndView getReports(){
-        ModelAndView mav = new ModelAndView("all-report");
-        mav.addObject("reports", soundboardService.getAllReports());
-        return mav;
-    }
-
-    @RequestMapping(value = "/report/{reportId:.+}")
-    public ModelAndView handleReport(@PathVariable int reportId){
-        ModelAndView mav = new ModelAndView("report");
-        mav.addObject("report", soundboardService.getReport(reportId));
-        return mav;
-    }
-
-    @RequestMapping(value = "report/{reportId:.+}/resolved", method = RequestMethod.POST)
-    public String resolvedReport(@PathVariable int reportId){
-        soundboardService.resolvedReport(reportId);
-        return "redirect:/all-report";
-    }
-
-    @RequestMapping(value = "report/{reportId:.+}/save_notes", method = RequestMethod.POST)
-    public String saveNotesReport(@PathVariable int reportId, @RequestParam String notes){
-        soundboardService.saveNotesReport(reportId, notes);
-        return "redirect:/report/"+reportId;
-    }
-
     private InputStream getInputStream(MultipartFile file) {
         try {
             return file.getInputStream();

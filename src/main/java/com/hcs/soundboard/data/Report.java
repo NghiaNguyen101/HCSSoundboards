@@ -14,7 +14,6 @@ public class Report {
     private String boardTitle;
     private String reportUser;
     private String boardOwner;
-    private String reportTitle;
     private String reportDesc;
     private Date reportDate;
     private String notes;

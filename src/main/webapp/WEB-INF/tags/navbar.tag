@@ -21,12 +21,12 @@
                 <li class="${page == 'about' ? 'active' : ''}"><a href="/about">About Us</a></li>
                 <li class="${page == 'create' ? 'active' : ''}"><a href="/create">Create</a></li>
                 <li class="${page == 'browse' ? 'active' : ''}"><a href="/browse">Browse</a></li>
-                <c:choose>
-                    <c:when test="${user.member}">
+                <c:if test="${user.member}">
                         <li class="${page == 'your-boards' ? 'active' : ''}"><a href="/your-boards">Your Boards</a></li>
-                        <li class="${page == 'all-report' ? 'active' : ''}"><a href="/all-report">Report</a></li>
-                    </c:when>
-                </c:choose>
+                </c:if>
+                <c:if test="${user.admin}">
+                    <li class="${page == 'all-report' ? 'active' : ''}"><a href="/all-report">Reports</a></li>
+                </c:if>
             </ul>
             <hcs:form name="logout" action="/logout" method="post">
                 <ul class="nav navbar-nav navbar-right">

@@ -3,6 +3,7 @@
 
 <%--@elvariable id="board" type="com.hcs.soundboard.data.Board"--%>
 <%--@elvariable id="useShared" type="java.lang.Boolean"--%>
+<%--@elvariable id="user" type="com.hcs.soundboard.data.HCSUser"--%>
 <c:set var="version" value="${useShared ? board.sharedVersion : board.unsharedVersion}" />
 
 <hcs:standard-page title="${version.title}" page="board">
@@ -33,16 +34,23 @@
                         <h4 class="modal-title">Report this soundboard</h4>
                     </div>
                     <div class="modal-body">
-                        <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/create-report">
-                            <input class="form-control" type="text" name="reportTitle" id="reportTitle"
-                                   placeholder="Report Title" required="required"
-                                   maxlength="128" style="width:100%;"/>
+                        <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/create-report"
+                            id="submit_report">
+                            <h4>Tell us about it, what happen?</h4>
+                            <input type="radio" name="reportDesc" value="Sexual Content" id="report_1" checked>
+                            <label for="report_1"> Sexual Content</label><br />
+                            <input type="radio" name="reportDesc" value="Violent and abusive content" id="report_2">
+                            <label for="report_2"> Violent and abusive content</label><br />
+                            <input type="radio" name="reportDesc" value="Spam or misleading" id="report_3" >
+                            <label for="report_3"> Spam or misleading</label><br />
+                            <input type="radio" name="reportDesc" value="Copyright issues" id="report_4">
+                            <label for="report_4"> Copyright issues</label><br />
+                            <input type="radio" name="reportDesc" value="other" id="other_report">
+                            <label for="other_report"> Other, please explain: </label>
+                            <input class="form-control" type="text" name="other_detail" id="other_report_text"
+                                   disabled="disabled">
                             <br/>
-                            <textarea class="form-control" rows="5" name="reportDesc" id="reportDesc"
-                                      placeholder="Tell us about it..." required="required"
-                                maxlength="512" style="width:100%; resize: none;"></textarea>
-                            <br/>
-                            <input class="btn btn-info btn-lg" type="submit" value="Send Report"/>
+                            <input class="btn btn-info btn-lg center" type="submit" value="Send Report"/>
                         </hcs:form>
                     </div>
                     <div class="modal-footer">

@@ -66,7 +66,7 @@ $(document).ready(function () {  
 
     //Display warning to save notes, if changes
     $("#report_notes").change(function () {
-        var original_notes = $("#oroginal_notes").val();
+        var original_notes = $("#original_notes").val();
         var new_notes = $("#report_notes").val();
         if (new_notes != original_notes)
             $("#warning_save_notes").removeClass("hidden");
@@ -77,30 +77,27 @@ $(document).ready(function () {  
 
     //save report notes
     $("#save_notes_button").click(function () {
-       // var reportId = $("#report_id").val();
         var notes = $("#report_notes").val();
         $("#save_notes_report_form").submit();
-       // alert(reportId + "\n" + notes + "\n" +"/report/" + reportId + "/save_notes");
-
-       /* $.ajax({
-            url: "/report/save_notes",
-            data: "reportId=" + reportId + "&notes=" + notes,
-            type: "GET",
-            success: function (data) {
-                alert("Save successful");
-            },
-            error: function (e) {
-                alert("Error: " + e);
-            }
-        });*/
     });
-   /* $("#fixed_title").click(function () {
-        $("#fixed_title").css("display", "none");
-        $("#input_tile").css("display", "block");
-        $("#input_tile").focus();
-    });
-*/
 
+    //radio box for report "Other"
+    $("[id^=report_], #other_report").change(function () {
+        if (this.id.startsWith("report_")){
+            $("#other_report_text").prop("disabled", true);
+        } else{
+            $("#other_report_text").prop("disabled", false);
+        }
+    });
+
+    //on submit the report, check for other, detail report
+    $("#submit_report").submit(function () {
+        if ($("#other_report").prop("checked") == true){
+            $("#other_report").val($("#other_report_text").val());
+            $("#other_report_text").prop("disabled", true);
+        }
+        return true;
+    });
 
     var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];
     var codeIndex = 0;
@@ -118,10 +115,7 @@ $(document).ready(function () {  
     });
  });
 
-//var current;
 function playSound(soundId) {
-    //current = new Audio('/sound/' + soundId)
-    //current.play()
     new Audio('/sound/' + soundId).play()
 }
 
@@ -135,12 +129,6 @@ function switchDelete(checkbox, value) {
         document.getElementById("checkedState_" + value).className = "glyphicon glyphicon-check";
     }
 }
-
-/*function switchPlay(soundId) {
-    alert("halp")
-    document.getElementById(soundId).checked = true;
-
-}*/
 
 function randomSounds() {
     var sounds = $('audio');
