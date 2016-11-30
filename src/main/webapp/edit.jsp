@@ -44,8 +44,17 @@
         </button>
         <ul class="dropdown-menu">
             <li><a href="" data-toggle="modal" data-target="#myModal">Add Sounds</a></li>
-            <li><a href="">Make Public</a></li>
-            <li><a href="">View Shared Soundboard</a></li>
+            <c:choose>
+                <c:when test="${board.hasBeenShared()}">
+                    <li><a href="">Make Hidden</a></li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="">Make Public</a></li>
+                </c:otherwise>
+            </c:choose>
+            <c:if test="${board.hasBeenShared()}">
+                <li><a href="">View Shared Soundboard</a></li>
+            </c:if>
             <li><a href="/board/${board.id}/preview">Preview Changes</a></li>
             <li><a href="">Delete Soundboard</a></li>
         </ul>
