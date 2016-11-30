@@ -22,7 +22,8 @@
     <h4>Notes:</h4>
     <hcs:form id="save_notes_report_form" action="/report/${report.reportId}/save_notes" method="post">
         <input id="original_notes" type="hidden" value="${report.notes}">
-        <textarea id="report_notes" class="form-control" name="notes" style="resize: none" rows="3">${report.notes}</textarea>
+        <textarea id="report_notes" class="form-control" name="notes"
+                  style="resize: none" rows="3" maxlength="512">${report.notes}</textarea>
     </hcs:form>
 
     <br />

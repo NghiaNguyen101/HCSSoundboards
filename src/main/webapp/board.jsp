@@ -48,7 +48,7 @@
                             <input type="radio" name="reportDesc" value="other" id="other_report">
                             <label for="other_report"> Other, please explain: </label>
                             <input class="form-control" type="text" name="other_detail" id="other_report_text"
-                                   disabled="disabled">
+                                   disabled="disabled" maxlength="512">
                             <br/>
                             <input class="btn btn-info btn-lg center" type="submit" value="Send Report"/>
                         </hcs:form>

@@ -10,8 +10,11 @@
     </div>
     <div id="buttons-edit">
         <hcs:form action="/board/${board.id}/edit-board" method="post">
-            <h1><input type="text" class="edit-text" name="boardName" value="${version.title}"/></h1>
-            <p class="lead"><input type="text" class="edit-text" name="boardDesc" value="${version.description}"></p>
+            <h1><input type="text" class="edit-text" name="boardName" value="${version.title}" maxlength="100"/></h1>
+            <p class="lead">
+                <input type="text" class="edit-text" name="boardDesc"
+                       value="${version.description}" maxlength="1000"/>
+            </p>
             <div style="text-align: left">
                 <c:forEach var="sound" items="${version.sounds}">
                     <hcs:edit-sounds sound="${sound}"/>
