@@ -4,7 +4,7 @@
 @elvariable id="board" type="com.hcs.soundboard.data.Board"
 <c:set var="version" value="${board.unsharedVersion}"/>
 
-<hcs:standard-page title="Edit Soundboard" page="create">
+<hcs:standard-page title="Edit Soundboard" page="your-boards">
     <div class="jumbotron">
 
     </div>
@@ -12,26 +12,30 @@
         <hcs:form action="/board/${board.id}/edit-board" method="post">
             <h1><input type="text" class="edit-text" name="boardName" value="${version.title}"/></h1>
             <p class="lead"><input type="text" class="edit-text" name="boardDesc" value="${version.description}"></p>
-            <c:forEach var="sound" items="${version.sounds}">
-                <p>
-                    <input type="hidden" name="soundId" value="${sound.id}">
-                    <hcs:play-button sound="${sound}"/>
-                    &nbsp
-                    <input type="hidden" name="originalName" value="${sound.name}">
-                    <input type="text" name="name" value="${sound.name}">
-                    &nbsp
-                    <hcs:trash-button sound="${sound}"/>
-
-                </p>
-            </c:forEach>
-            <div class="form-group">
+            <div style="text-align: left">
+                <c:forEach var="sound" items="${version.sounds}">
+                    <hcs:edit-sounds sound="${sound}"/>
+                </c:forEach>
+            </div>
+            <div class="form-group" style="margin-top: 20px">
                 <input type="submit" class="btn" value="Submit Changes"/>
             </div>
         </hcs:form>
     </div>
 
-    <button type="button" class="btn" style="margin-bottom: 10px" data-toggle="modal" data-target="#myModal">Add Sounds</button>
-
+    <%--<button type="button" class="btn" style="margin-bottom: 10px; margin-top: 20px" data-toggle="modal" data-target="#myModal">Add Sounds</button>--%>
+    <div class="dropdown" style="margin-bottom: 10px">
+        <button class="btn dropdown-toggle" type="button" data-toggle="dropdown">
+            <i class="caret"></i> &nbsp Options
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="" data-toggle="modal" data-target="#myModal">Add Sounds</a></li>
+            <li><a href="">Make Public</a></li>
+            <li><a href="">View Shared Soundboard</a></li>
+            <li><a href="/board/${board.id}/preview">Preview Changes</a></li>
+            <li><a href="">Delete Soundboard</a></li>
+        </ul>
+    </div>
     <!-- Modal -->
     <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
@@ -66,11 +70,13 @@
                 You don't have any unshared changes.
             </c:when>
             <c:otherwise>
+                <%--<a href="/board/${board.id}/preview">Preview Changes</a>--%>
                 <hcs:form method="post" action="/board/${board.id}/share">
                     <input class="btn" type="submit" value="Share Soundboard">
                 </hcs:form>
-                <a href="/board/${board.id}/preview">Preview Changes</a>
+
             </c:otherwise>
         </c:choose>
+
     </div>
 </hcs:standard-page>

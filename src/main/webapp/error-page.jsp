@@ -32,7 +32,7 @@
     </div>
 </nav>
     <div class="jumbotron">
-        <h1>Opps, We couldn't find that page</h1>
+        <h1>Oops, we couldn't find that page</h1>
         <p class="lead"> Error: ${msg}</p>
         <h2>Try searching or go back to <a href="/">HCSSoundboards</a> home page</h2>
         <br>

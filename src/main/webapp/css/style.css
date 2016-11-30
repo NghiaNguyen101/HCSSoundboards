@@ -42,6 +42,17 @@ body #buttons-edit .form-control {
 
 }
 
+.edit-view {
+    width: 350px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+    display: inline-block;
+
+}
+
+.dropdown {
+   position: relative;
+}
 /*
 .btn-primary {
     background-color: mediumvioletred;
