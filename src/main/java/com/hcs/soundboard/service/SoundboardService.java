@@ -188,6 +188,13 @@ public class SoundboardService {
         throw new ForbiddenException();
     }
 
+    public void deleteBoard(HCSUser user, int boardId) {
+        Board board = soundboardDao.getBoard(boardId, false, false);
+        if (canEditBoard(user, board)) {
+            soundboardDao.deleteBoard(boardId);
+        }
+    }
+
     private boolean canViewBoard(HCSUser user, Board board) {
         return board.hasBeenShared() || canEditBoard(user, board);
     }

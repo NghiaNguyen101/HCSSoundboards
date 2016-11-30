@@ -191,6 +191,12 @@ public class SoundboardController extends BaseController {
         return String.format("redirect:/board/%d/edit", boardId);
     }
 
+    @RequestMapping(value = "/board/{boardId:.+}/delete", method = RequestMethod.POST)
+    public String deleteBoard(@PathVariable int boardId) {
+        soundboardService.deleteBoard(getUser(), boardId);
+        return "redirect:/";
+    }
+
     private InputStream getInputStream(MultipartFile file) {
         try {
             return file.getInputStream();

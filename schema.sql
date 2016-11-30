@@ -21,9 +21,9 @@ CREATE INDEX fk_username
 CREATE UNIQUE INDEX uni_username_role
   ON role (role, username);
 
-insert into user value ('admin', '$2a$10$IGo0Ey7Pxe5wipaBQ3CSauwKKcLmL64YPEx.IqKo3ozCVIXJ4BihO', 1);
-insert into role (username, role) value ('admin', 'ROLE_ADMIN');
-insert into role (username, role) value ('admin', 'ROLE_USER');
+INSERT INTO user VALUE ('admin', '$2a$10$IGo0Ey7Pxe5wipaBQ3CSauwKKcLmL64YPEx.IqKo3ozCVIXJ4BihO', 1);
+INSERT INTO role (username, role) VALUE ('admin', 'ROLE_ADMIN');
+INSERT INTO role (username, role) VALUE ('admin', 'ROLE_USER');
 
 # Application logic tables
 CREATE TABLE sound
@@ -39,6 +39,7 @@ CREATE TABLE board
   ownerName  VARCHAR(45) NOT NULL,
   hidden     BOOLEAN     NOT NULL,
   createDate TIMESTAMP   NOT NULL,
+  deleteDate TIMESTAMP   NULL,
   FOREIGN KEY (ownerName) REFERENCES user (username)
 );
 
@@ -63,33 +64,33 @@ CREATE TABLE board_x_sound
 );
 
 CREATE TABLE `soundboard`.`report_board` (
-   `reportId` INT NOT NULL AUTO_INCREMENT,
-   `boardId` INT NOT NULL,
-   `boardTitle` VARCHAR(100) NOT NULL,
-   `reportDesc` VARCHAR(512) NOT NULL,
-   `reportUser` VARCHAR(45) NOT NULL,
-   `boardOwner` VARCHAR(45) NOT NULL,
-   `resolved` TINYINT(1) NOT NULL DEFAULT 0,
-   `reportDate` TIMESTAMP NOT NULL,
-   `notes` VARCHAR(512),
-   PRIMARY KEY (`reportId`),
-   INDEX `reportBoard_idx` (`boardId` ASC),
-   INDEX `reportUser_idx_idx` (`reportUser` ASC),
-   INDEX `boardOwner_idx_idx` (`boardOwner` ASC),
-   CONSTRAINT `reportBoard`
-   FOREIGN KEY (`boardId`)
-   REFERENCES `soundboard`.`board` (`id`)
-   ON DELETE NO ACTION
-   ON UPDATE NO ACTION,
-   CONSTRAINT `reportUser_idx`
-   FOREIGN KEY (`reportUser`)
-   REFERENCES `soundboard`.`user`
-   (`username`)
-   ON DELETE NO ACTION
-   ON UPDATE NO ACTION,
-   CONSTRAINT `boardOwner_idx`
-   FOREIGN KEY (`boardOwner`)
-   REFERENCES `soundboard`.`user` (`username`)
-   ON DELETE NO ACTION
-   ON UPDATE NO ACTION
+  `reportId`   INT          NOT NULL AUTO_INCREMENT,
+  `boardId`    INT          NOT NULL,
+  `boardTitle` VARCHAR(100) NOT NULL,
+  `reportDesc` VARCHAR(512) NOT NULL,
+  `reportUser` VARCHAR(45)  NOT NULL,
+  `boardOwner` VARCHAR(45)  NOT NULL,
+  `resolved`   TINYINT(1)   NOT NULL DEFAULT 0,
+  `reportDate` TIMESTAMP    NOT NULL,
+  `notes`      VARCHAR(512),
+  PRIMARY KEY (`reportId`),
+  INDEX `reportBoard_idx` (`boardId` ASC),
+  INDEX `reportUser_idx_idx` (`reportUser` ASC),
+  INDEX `boardOwner_idx_idx` (`boardOwner` ASC),
+  CONSTRAINT `reportBoard`
+  FOREIGN KEY (`boardId`)
+  REFERENCES `soundboard`.`board` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `reportUser_idx`
+  FOREIGN KEY (`reportUser`)
+  REFERENCES `soundboard`.`user`
+  (`username`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `boardOwner_idx`
+  FOREIGN KEY (`boardOwner`)
+  REFERENCES `soundboard`.`user` (`username`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
 );

@@ -58,7 +58,7 @@ public class SoundboardDAO {
                             "FROM board " +
                             "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
                             "LEFT JOIN board_version s ON board.id = s.boardId AND s.shared " +
-                            "WHERE board.id = ?",
+                            "WHERE board.id = ? AND board.deleteDate IS NULL",
                     new Object[]{boardId},
                     this::boardMapper);
 
@@ -84,7 +84,7 @@ public class SoundboardDAO {
                         "FROM board " +
                         "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
                         "JOIN board_version s ON board.id = s.boardId AND s.shared " +
-                        "WHERE NOT board.hidden " +
+                        "WHERE NOT board.hidden AND deleteDate IS NULL " +
                         "ORDER BY s.updateDate DESC",
                 this::boardMapper);
     }
@@ -273,7 +273,7 @@ public class SoundboardDAO {
                         "FROM board " +
                         "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
                         "LEFT JOIN board_version s ON board.id = s.boardId AND s.shared " +
-                        "WHERE ownerName = ? " +
+                        "WHERE ownerName = ? AND deleteDate IS NULL " +
                         "ORDER BY u.updateDate DESC",
                 new Object[]{username},
                 this::boardMapper);
@@ -287,9 +287,14 @@ public class SoundboardDAO {
                         "FROM board " +
                         "JOIN board_version u ON board.id = u.boardId AND NOT u.shared " +
                         "JOIN board_version s ON board.id = s.boardId AND s.shared " +
-                        "WHERE ownerName = ? AND NOT board.hidden " +
+                        "WHERE ownerName = ? AND NOT board.hidden AND board.deleteDate IS NULL " +
                         "ORDER BY s.updateDate DESC",
                 new Object[]{username},
                 this::boardMapper);
+    }
+
+    @Transactional
+    public void deleteBoard(int boardId) {
+        jdbcTemplate.update("UPDATE board SET deleteDate = NOW() WHERE id = ?", boardId);
     }
 }
