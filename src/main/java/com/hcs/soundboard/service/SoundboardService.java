@@ -195,6 +195,13 @@ public class SoundboardService {
         }
     }
 
+    public void setHidden(HCSUser user, int boardId, boolean hidden) {
+        Board board = soundboardDao.getBoard(boardId, false, false);
+        if (canEditBoard(user, board)) {
+            soundboardDao.setHidden(boardId, hidden);
+        }
+    }
+
     private boolean canViewBoard(HCSUser user, Board board) {
         return board.hasBeenShared() || canEditBoard(user, board);
     }

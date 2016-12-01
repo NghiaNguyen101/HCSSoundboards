@@ -22,20 +22,20 @@
             </div>
             <div class="form-group" style="margin-top: 20px">
                 <input type="submit" class="btn" value="Submit Changes"/>
-           <%-- <c:forEach var="sound" items="${version.sounds}">
-                <p>
-                    <input type="hidden" name="soundId" value="${sound.id}">
-                    <hcs:play-button sound="${sound}"/>
-                    &nbsp;
-                    <input type="hidden" name="originalName" value="${sound.name}">
-                    <input type="text" name="name" value="${sound.name}">
-                    &nbsp;
-                    <hcs:trash-button sound="${sound}"/>
+                    <%-- <c:forEach var="sound" items="${version.sounds}">
+                         <p>
+                             <input type="hidden" name="soundId" value="${sound.id}">
+                             <hcs:play-button sound="${sound}"/>
+                             &nbsp;
+                             <input type="hidden" name="originalName" value="${sound.name}">
+                             <input type="text" name="name" value="${sound.name}">
+                             &nbsp;
+                             <hcs:trash-button sound="${sound}"/>
 
-                </p>
-            </c:forEach>
-            <div class="form-group">
-                <input type="submit" class="btn" value="Save Changes"/> --%>
+                         </p>
+                     </c:forEach>
+                     <div class="form-group">
+                         <input type="submit" class="btn" value="Save Changes"/> --%>
             </div>
         </hcs:form>
     </div>
@@ -47,18 +47,29 @@
         </button>
         <ul class="dropdown-menu">
             <li><a href="" data-toggle="modal" data-target="#myModal">Add Sounds</a></li>
-            <c:choose>
-                <c:when test="${board.hasBeenShared()}">
-                    <li><a href="">Make Hidden</a></li>
-                </c:when>
-                <c:otherwise>
-                    <li><a href="">Make Public</a></li>
-                </c:otherwise>
-            </c:choose>
             <c:if test="${board.hasBeenShared()}">
-                <li><a href="/board/${board.id}">View Shared Soundboard</a></li>
+                <li><a href="">Unpublish</a></li>
+                <li><a href="/board/${board.id}">View Published Version</a></li>
             </c:if>
-            <li><a href="/board/${board.id}/preview">Preview Changes</a></li>
+            <c:if test="${board.hasUnsharedChanges()}">
+                <li><a href="/board/${board.id}/preview">Preview Draft</a></li>
+            </c:if>
+            <li>
+                <c:choose>
+                    <c:when test="${not board.hidden}">
+                        <hcs:post-link action="/board/${board.id}/hidden" name="set-hidden">
+                            <input type="hidden" name="hidden" value="true">
+                            Make Hidden
+                        </hcs:post-link>
+                    </c:when>
+                    <c:otherwise>
+                        <hcs:post-link action="/board/${board.id}/hidden" name="set-hidden">
+                            <input type="hidden" name="hidden" value="false">
+                            Make Not Hidden
+                        </hcs:post-link>
+                    </c:otherwise>
+                </c:choose>
+            </li>
             <li><hcs:post-link name="delete" action="/board/${board.id}/delete">Delete Soundboard</hcs:post-link></li>
         </ul>
     </div>
@@ -74,7 +85,8 @@
                 </div>
                 <div class="modal-body">
                     <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/upload">
-                        <input class="btn" type="file" accept="audio/*" capture="microphone" name="sounds" required="required"
+                        <input class="btn" type="file" accept="audio/*" capture="microphone" name="sounds"
+                               required="required"
                                multiple/>
                         &nbsp;&nbsp;&nbsp;<input class="btn" type="submit" value="Upload Sounds"/>
                     </hcs:form>

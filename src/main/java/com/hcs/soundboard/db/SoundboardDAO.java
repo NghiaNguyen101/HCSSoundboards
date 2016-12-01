@@ -297,4 +297,9 @@ public class SoundboardDAO {
     public void deleteBoard(int boardId) {
         jdbcTemplate.update("UPDATE board SET deleteDate = NOW() WHERE id = ?", boardId);
     }
+
+    @Transactional
+    public void setHidden(int boardId, boolean hidden) {
+        jdbcTemplate.update("update board set hidden = ? where id = ?", hidden, boardId);
+    }
 }

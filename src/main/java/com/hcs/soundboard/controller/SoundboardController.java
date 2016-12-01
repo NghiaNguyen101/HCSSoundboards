@@ -197,6 +197,12 @@ public class SoundboardController extends BaseController {
         return "redirect:/";
     }
 
+    @RequestMapping(value = "/board/{boardId:.+}/hidden")
+    public String setHiddenState(@PathVariable int boardId, @RequestParam boolean hidden) {
+        soundboardService.setHidden(getUser(), boardId, hidden);
+        return String.format("redirect:/board/%d/edit", boardId);
+    }
+
     private InputStream getInputStream(MultipartFile file) {
         try {
             return file.getInputStream();
