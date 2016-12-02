@@ -21,15 +21,18 @@
 
     <h4>Notes:</h4>
     <hcs:form id="save_notes_report_form" action="/report/${report.reportId}/save_notes" method="post">
+        <input id="reportId" type="hidden" value="${report.reportId}" />
         <input id="original_notes" type="hidden" value="${report.notes}">
         <textarea id="report_notes" class="form-control" name="notes"
                   style="resize: none" rows="3" maxlength="512">${report.notes}</textarea>
     </hcs:form>
-
+    <p id="warning_save_notes" class="hidden bg-warning text-danger">Your notes is modified. Please save your notes!</p>
+    <p id="success_save_notes" class="bg-success">Your notes is up to date!</p>
     <br />
     <!-- confirm box for resloving report -->
     <div style="text-align: center">
-        <button type="button" class="btn btn-lg btn-success" id="save_notes_button">Save Notes</button> &nbsp;
+        <button type="button" class="btn btn-lg btn-success disabled"
+                id="save_notes_button">Save Notes</button> &nbsp;
         <button type="button" class="btn btn-warning btn-lg" data-toggle="modal" data-target="#confirm_resolved_modal">Resolve</button>
     </div>
     <div class="modal fade" id="confirm_resolved_modal" role="dialog" style="display:none;">
@@ -48,5 +51,7 @@
             </div>
         </div>
     </div>
+
+
 
 </hcs:standard-page>

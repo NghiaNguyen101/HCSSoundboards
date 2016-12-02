@@ -1,4 +1,14 @@
-$(document).ready(function () {  
+$(document).ready(function () {
+
+    /*
+     * Needed for ajax post
+     */
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
+
     /* 
      * Check password in front-end before the form submit to the system 
      * Password has to be greater than 8 characters 
@@ -12,26 +22,29 @@ $(document).ready(function () {  
 
         //check length of the password
         if(pass.length < 8) { 
-            $("#pass_length_error").html("Password must be at least 8 chracters long!"); 
+            $("#pass_length_error").html("Password must be at least 8 chracters long!").removeClass("hidden") ;
+           // $("#pass_length_error").removeClass("hidden");
             is_error = 1;
         }
         else
-            $("#pass_length_error").html("");
+            $("#pass_length_error").html("").addClass("hidden");
 
         //check password and confirm password are the same
         if(pass != confirm_pass) {
-            $("#pass_not_match").html("Password does not match");
+            $("#pass_not_match").html("Password does not match").removeClass("hidden");
             $("#password").val("");
             $("#confirm-password").val("");
             is_error = 1;
         }
         else
-            $("#pass_not_match").html("");
+            $("#pass_not_match").html("").addClass("hidden");
 
 
         // See if the warning is cleared
         if($("#nameTaken").html() != '')
             is_error = 1;
+        if (is_error)
+            $("#register_warning").removeClass("hidden");
 
         return is_error == 0; 
     });
@@ -45,13 +58,17 @@ $(document).ready(function () {  
     $("#username").change(function () {
         $.ajax({
             url: "/checkUsername",
-            data: "username=" + $("#username").val(),
-            type: "GET",
+            data: {username: $("#username").val()},
+            type: "POST",
             success: function(data){
-                if(data == "Taken")
+                if(data == "Taken") {
                     $("#nameTaken").html("Username already exists!");
-                else
-                    $("#nameTaken").html("");
+                    $("#register_warning, #nameTaken").removeClass("hidden");
+                }
+                else {
+                    $("#nameTaken").html("").addClass("hidden");
+                    $("#register_warning").addClass("hidden");
+                }
             },
             error: function (e) {
                 alert("Error: " + e);
@@ -59,29 +76,54 @@ $(document).ready(function () {  
         });
     });
 
+
+
+    //Display warning to save notes, if changes
+    //Display up to date if not
+    $("#report_notes").bind('input',function () {
+        var original_notes = $("#original_notes").val();
+        var new_notes = $("#report_notes").val();
+        if (new_notes != original_notes) {
+            $("#warning_save_notes").removeClass("hidden");
+            $("#success_save_notes").addClass("hidden");
+            $("#save_notes_button").removeClass("disabled");
+        }
+        else {
+            $("#warning_save_notes").addClass("hidden");
+            $("#success_save_notes").removeClass("hidden");
+            $("#save_notes_button").addClass("disabled");
+        }
+
+    });
+
+    //save report notes with ajax post
+    //update new notes
+    $("#save_notes_button").click(function () {
+        var notes = $("#report_notes").val();
+        var reportId = $("#reportId").val();
+        $.ajax({
+            url: "/report/" + reportId +"/save_notes",
+            data: {notes : notes},
+            type: "POST",
+            success: function(data){
+                $("#warning_save_notes").addClass("hidden");
+                $("#success_save_notes").removeClass("hidden");
+                $("#save_notes_button").addClass("disabled");
+                $("#original_notes").val(notes);
+            },
+            error: function (e) {
+                alert("Failed to save notes. Please try again!");
+            }
+        });
+    });
+
+
     //Submit the resolved report form
     $("#confirm_resolved").click(function () {
         $("#resolved_report_form").submit();
     });
 
-    //Display warning to save notes, if changes
-    $("#report_notes").change(function () {
-        var original_notes = $("#original_notes").val();
-        var new_notes = $("#report_notes").val();
-        if (new_notes != original_notes)
-            $("#warning_save_notes").removeClass("hidden");
-        else
-            $("#warning_save_notes").addClass("hidden");
-
-    });
-
-    //save report notes
-    $("#save_notes_button").click(function () {
-        var notes = $("#report_notes").val();
-        $("#save_notes_report_form").submit();
-    });
-
-    //radio box for report "Other"
+    //radio box for report "Other" -> enable text
     $("[id^=report_], #other_report").change(function () {
         if (this.id.startsWith("report_")){
             $("#other_report_text").prop("disabled", true);
@@ -90,13 +132,38 @@ $(document).ready(function () {  
         }
     });
 
-    //on submit the report, check for other, detail report
-    $("#submit_report").submit(function () {
-        if ($("#other_report").prop("checked") == true){
-            $("#other_report").val($("#other_report_text").val());
-            $("#other_report_text").prop("disabled", true);
+    /*
+     *  Submit report ajax with post
+     *  Hide the form for report modal
+     *  Popup the status of the submission
+     */
+    $("#send_report").click(function () {
+        $("#modal_report_form").modal("hide");
+
+        var reportDesc = $("#other_report_text").val();
+        var boardId = $("#boardId").val();
+
+        if ($("#other_report").prop("checked") != true) {
+            reportDesc = $("input[name=reportDesc]:checked").val();
         }
-        return true;
+
+        //submit ajax
+        $.ajax({
+            url: "/board/" + boardId + "/create-report",
+            data: {reportDesc : reportDesc},
+            type: "POST",
+            success: function(data){
+                //popup successful modal here
+                $("#report_status").html("Submit Report Successful! \n" +
+                    "Please alow us at least 24 hours to process your report. \n " +
+                    "Enjoy!");
+                $("#report_status_modal").modal("show");
+            },
+            error: function (e) {
+                $("#report_status").html("Failed to submit report. Please Try Again!");
+                $("#report_status_modal").modal("show");
+            }
+        });
     });
 
     var konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight'];

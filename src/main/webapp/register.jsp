@@ -5,7 +5,14 @@
     <div class="jumbotron">
         <p class="lead">Sign up for an account</p>
     </div>
+
     <div class="form-signin">
+        <div class="hidden alert alert-danger fade in" id="register_warning">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <li id="nameTaken" class="hidden"></li>
+            <li id="pass_length_error" class="hidden"></li>
+            <li id="pass_not_match" class="hidden"></li>
+        </div>
         <hcs:form action="/register" method="post" id="register">
             <div class="form-group">
                 <input type="text" class="form-control" maxlength="45"
@@ -24,8 +31,5 @@
             </div>
             <div><input type="submit" value="Sign Up" class="btn btn-primary"/></div>
         </hcs:form>
-        <div id="nameTaken"></div>
-        <div id="pass_length_error"></div>
-        <div id="pass_not_match"></div>
     </div>
 </hcs:standard-page>

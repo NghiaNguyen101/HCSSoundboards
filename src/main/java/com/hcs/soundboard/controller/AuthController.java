@@ -52,7 +52,7 @@ public class AuthController extends BaseController {
      * @param username the username user wants to register
      *
      */
-    @RequestMapping (value="/checkUsername", method = RequestMethod.GET)
+    @RequestMapping (value="/checkUsername", method = RequestMethod.POST)
     @ResponseBody
     public String checkUsername(@RequestParam String username){
         if(securityService.checkUsernameAjax(username))

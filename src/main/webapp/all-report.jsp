@@ -3,7 +3,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <hcs:standard-page title="Report" page="all-report">
-
+    <!-- Select report status resolved or not -->
+    <hcs:form action="/all-report">
+        <div class="btn-group btn-toggle">
+            <button class="btn ${status == false ? "btn-success" : "btn-default"}" type="submit"
+                    name="resolved" value="0">Unresolved</button>
+            <button class="btn ${status == true ? "btn-success" : "btn-default"}" type="submit"
+                    name="resolved" value="1">Resolved</button>
+        </div>
+    </hcs:form>
+    <br />
     <%--@elvariable id="reports" type="java.util.List<com.hcs.soundboard.data.Report>"--%>
     <c:forEach var="report" items="${reports}" varStatus="loop">
         <div>
