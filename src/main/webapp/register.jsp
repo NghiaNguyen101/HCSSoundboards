@@ -8,7 +8,6 @@
 
     <div class="form-signin">
         <div class="hidden alert alert-danger fade in" id="register_warning">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <li id="nameTaken" class="hidden"></li>
             <li id="pass_length_error" class="hidden"></li>
             <li id="pass_not_match" class="hidden"></li>
