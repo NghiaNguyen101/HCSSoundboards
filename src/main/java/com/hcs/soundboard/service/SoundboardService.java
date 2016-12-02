@@ -142,17 +142,19 @@ public class SoundboardService {
      * @param names    The new names.
      * @param boardId  The id of the board in question.
      */
-    public void editSoundNames(HCSUser user, List<Integer> soundIds, List<String> names, List<String> originalNames,
-                               int boardId) {
+    public void editSounds(HCSUser user, List<Integer> soundIds, List<String> names, List<String> originalNames,
+                               List<String> boxColors, List<String> originalBoxColors , int boardId) {
         Board board = soundboardDao.getBoard(boardId, false, false);
         if (canEditBoard(user, board)) {
             List<SoundMetadata> metadatas = new ArrayList<>();
             for (int i = 0; i < soundIds.size(); i++) {
-                if (!names.get(i).equals(originalNames.get(i))) {
-                    metadatas.add(new SoundMetadata(soundIds.get(i), names.get(i)));
+                if (!names.get(i).equals(originalNames.get(i)) ||
+                        !boxColors.get(i).equals(originalBoxColors.get(i))) {
+                    metadatas.add(new SoundMetadata(soundIds.get(i), names.get(i), boxColors.get(i)));
                 }
             }
-            soundboardDao.editSoundNames(metadatas, boardId);
+            if (!metadatas.isEmpty())
+                soundboardDao.editSounds(metadatas, boardId);
         } else {
             throw new ForbiddenException();
         }

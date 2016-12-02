@@ -58,6 +58,7 @@ CREATE TABLE board_x_sound
   shared    BOOLEAN      NOT NULL,
   soundId   INT,
   soundName VARCHAR(100) NOT NULL,
+  boxColor  CHAR(7) NOT NULL DEFAULT '#FFFFFF',
   PRIMARY KEY (boardId, soundId, shared),
   FOREIGN KEY (boardId) REFERENCES board (id),
   FOREIGN KEY (soundId) REFERENCES sound (id)

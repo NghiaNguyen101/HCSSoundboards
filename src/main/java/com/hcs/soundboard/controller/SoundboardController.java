@@ -180,13 +180,20 @@ public class SoundboardController extends BaseController {
     public String editBoard(@PathVariable int boardId,
                             @RequestParam("boardName") String boardName,
                             @RequestParam("boardDesc") String boardDesc,
-                            @RequestParam("soundId") List<Integer> soundIds,
+                            @RequestParam(value= "soundId", required = false) List<Integer> soundIds,
                             @RequestParam(value = "deleted", required = false) List<Integer> deletedIds,
-                            @RequestParam("name") List<String> names,
-                            @RequestParam("originalName") List<String> originalNames) throws IOException {
+                            @RequestParam(value = "name", required =  false) List<String> names,
+                            @RequestParam(value = "originalName", required = false) List<String> originalNames,
+                            @RequestParam(value = "boxColor", required = false) List<String> boxColors,
+                            @RequestParam(value = "originalBoxColor", required = false) List<String> originalBoxColors)
+                            throws IOException {
         soundboardService.editBoardDesc(getUser(), boardId, boardName, boardDesc);
-        soundboardService.editSoundNames(getUser(), soundIds, names, originalNames, boardId);
-        if (!CollectionUtils.isEmpty(deletedIds))
+
+        if (soundIds != null && !soundIds.isEmpty())
+            soundboardService.editSounds(getUser(), soundIds, names, originalNames, boxColors,
+                originalBoxColors, boardId);
+
+        if (deletedIds != null && !CollectionUtils.isEmpty(deletedIds))
             soundboardService.removeSoundsFromBoard(getUser(), deletedIds, boardId);
         return String.format("redirect:/board/%d/edit", boardId);
     }

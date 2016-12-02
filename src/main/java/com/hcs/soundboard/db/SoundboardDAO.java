@@ -127,10 +127,10 @@ public class SoundboardDAO {
     @Transactional
     private List<SoundMetadata> getAllSoundsForBoardVersion(int boardId, boolean shared) {
         return jdbcTemplate.query(
-                "SELECT id, soundName FROM sound JOIN board_x_sound ON sound.id = board_x_sound.soundId " +
+                "SELECT id, soundName, boxColor FROM sound JOIN board_x_sound ON sound.id = board_x_sound.soundId " +
                         "WHERE boardId = ? AND shared = ?",
                 new Object[]{boardId, shared},
-                (rs, rownum) -> new SoundMetadata(rs.getInt("id"), rs.getString("soundName")));
+                (rs, rownum) -> new SoundMetadata(rs.getInt("id"), rs.getString("soundName"), rs.getString("boxColor")));
     }
 
     /**
@@ -193,12 +193,12 @@ public class SoundboardDAO {
      * @param metadatas The metadata of the sounds
      * @param boardId   The boardId of the board in question.
      */
-    public void editSoundNames(List<SoundMetadata> metadatas, int boardId) {
+    public void editSounds(List<SoundMetadata> metadatas, int boardId) {
         List<Object[]> boardXSoundArgs = metadatas.stream()
-                .map(metadata -> new Object[]{metadata.getName(), boardId, metadata.getId()})
+                .map(metadata -> new Object[]{metadata.getName(), metadata.getBoxColor() ,boardId, metadata.getId()})
                 .collect(Collectors.toList());
 
-        jdbcTemplate.batchUpdate("UPDATE board_x_sound SET soundName = ? WHERE boardId = ? " +
+        jdbcTemplate.batchUpdate("UPDATE board_x_sound SET soundName = ?, boxColor = ? WHERE boardId = ? " +
                         "AND soundId = ? AND shared = FALSE",
                 boardXSoundArgs);
         updateBoardVersion(boardId);
@@ -253,8 +253,8 @@ public class SoundboardDAO {
                 "SELECT boardId, TRUE, title, description, updateDate FROM board_version " +
                 "WHERE boardId = ? AND shared = FALSE", boardId);
 
-        jdbcTemplate.update("INSERT INTO board_x_sound (boardId, shared, soundId, soundName)" +
-                "SELECT boardId, TRUE, soundId, soundName FROM board_x_sound " +
+        jdbcTemplate.update("INSERT INTO board_x_sound (boardId, shared, soundId, soundName, boxColor)" +
+                "SELECT boardId, TRUE, soundId, soundName, boxColor FROM board_x_sound " +
                 "WHERE boardId = ? AND shared = FALSE", boardId);
     }
 
