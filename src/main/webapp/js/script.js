@@ -76,8 +76,6 @@ $(document).ready(function () {
         });
     });
 
-
-
     //Display warning to save notes, if changes
     //Display up to date if not
     $("#report_notes").bind('input',function () {
@@ -202,5 +200,43 @@ function randomSounds() {
     var sound = sounds[Math.floor(Math.random() * sounds.length)];
     $(sound).hover();
     new Audio(sound.src).play();
-    setTimeout(randomSounds, 650)
+    setTimeout(randomSounds, 650);
+}
+
+
+var myAudios = [];
+window.URL = window.URL || window.webkitURL;
+function setFileInfo(files) {
+    var num_files = document.getElementById("audio_upload_input").files.length;
+    myAudios = []; 
+    updateInfos();
+    for (i=0; i<num_files; i++){ 
+        myAudios.push(files[i]); 
+        getAudioInfo(files, i); 
+    }
+}
+
+function getAudioInfo(files, i) { 
+    var audio = document.createElement('audio'); 
+    audio.preload = 'metadata'; 
+    audio.onloadedmetadata = function() { 
+        window.URL.revokeObjectURL(this.src) 
+        var duration = audio.duration; 
+        myAudios[i].duration = duration; 
+        updateInfos(); 
+    } 
+    audio.src = URL.createObjectURL(files[i]);
+ }
+
+function updateInfos(){
+    var soundInfo =  document.querySelector('#infos');
+    if (myAudios.length > 0)
+        soundInfo.className = "alert alert-success";
+    else
+        soundInfo.className = "alert alert-success hidden";
+
+    soundInfo.innerHTML="";
+    for(i=0;i<myAudios.length;i++){
+        soundInfo.innerHTML += "<div>"+myAudios[i].name+" duration: "+myAudios[i].duration+'</div>';
+    }
 }

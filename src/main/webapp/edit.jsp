@@ -86,10 +86,12 @@
                 <div class="modal-body">
                     <hcs:form method="post" enctype="multipart/form-data" action="/board/${board.id}/upload">
                         <input class="btn" type="file" accept="audio/*" capture="microphone" name="sounds"
-                               required="required"
-                               multiple/>
+                               required="required" id="audio_upload_input"
+                               multiple onchange="setFileInfo(this.files)" />
                         &nbsp;&nbsp;&nbsp;<input class="btn" type="submit" value="Upload Sounds"/>
                     </hcs:form>
+                    <br />
+                    <div id="infos" class="alert alert-success hidden"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
