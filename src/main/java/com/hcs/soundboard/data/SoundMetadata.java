@@ -15,4 +15,5 @@ import lombok.Data;
 public class SoundMetadata {
     private int id;
     private String name;
+    private String boxColor;
 }
