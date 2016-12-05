@@ -237,6 +237,6 @@ function updateInfos(){
 
     soundInfo.innerHTML="";
     for(i=0;i<myAudios.length;i++){
-        soundInfo.innerHTML += "<div>"+myAudios[i].name+" duration: "+myAudios[i].duration+'</div>';
+        soundInfo.innerHTML += "<div>" + myAudios[i].name + " - Duration: " + myAudios[i].duration.toFixed(2) + " seconds long.</div>";
     }
 }
