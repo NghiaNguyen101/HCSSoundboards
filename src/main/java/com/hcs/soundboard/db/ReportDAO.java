@@ -17,19 +17,17 @@ public class ReportDAO {
 
     /**
      * Report the soundboard
-     * <p>
+     *
      * Create a new entry in table report_board with column resolved is 0
      */
     @Transactional
     public void reportSoundboard(String reportUser, int boardId, String reportDesc) {
-        String boardOwner = jdbcTemplate.queryForObject("SELECT ownerName FROM board WHERE id=?",
-                new Object[]{boardId}, String.class);
         String boardTitle = jdbcTemplate.queryForObject("SELECT title FROM board_version WHERE boardId=? " +
                 "AND shared=1", new Object[]{boardId}, String.class);
 
-        jdbcTemplate.update("INSERT  INTO report_board (boardId, boardTitle, reportUser, boardOwner ," +
-                        " reportDesc, reportDate) VALUE (?, ?, ?, ?, ?, NOW())",
-                boardId, boardTitle, reportUser, boardOwner, reportDesc);
+        jdbcTemplate.update("INSERT INTO report_board (boardId, boardTitle, reportUser," +
+                        " reportDesc, reportDate) VALUE (?, ?, ?, ?, NOW())",
+                boardId, boardTitle, reportUser, reportDesc);
     }
 
 
@@ -39,8 +37,8 @@ public class ReportDAO {
      * @return list of report
      */
     public List<Report> getAllReports(Boolean resolved) {
-        return jdbcTemplate.query("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportDesc, reportDate, notes" +
-                        " FROM report_board WHERE COALESCE(resolved = ?, TRUE) ORDER BY reportDate DESC",
+        return jdbcTemplate.query("SELECT reportId, boardId, boardTitle, reportUser, ownerName, reportDesc, reportDate, notes " +
+                        "FROM report_board join board on boardId = board.id WHERE COALESCE(resolved = ?, TRUE) ORDER BY reportDate DESC",
                 new Object[]{resolved},
                 this::reportMapper);
     }
@@ -52,8 +50,8 @@ public class ReportDAO {
      * @return the report in question
      */
     public Report getReport(int reportId) {
-        return jdbcTemplate.queryForObject("SELECT reportId, boardId, boardTitle, reportUser, boardOwner, reportDesc, reportDate, notes" +
-                " FROM report_board WHERE reportId=?", new Object[]{reportId}, this::reportMapper);
+        return jdbcTemplate.queryForObject("SELECT reportId, boardId, boardTitle, reportUser, ownerName, reportDesc, reportDate, notes " +
+                "FROM report_board join board on boardId = board.id WHERE reportId=?", new Object[]{reportId}, this::reportMapper);
     }
 
     /**
@@ -70,7 +68,7 @@ public class ReportDAO {
                 rs.getInt("boardId"),
                 rs.getString("boardTitle"),
                 rs.getString("reportUser"),
-                rs.getString("boardOwner"),
+                rs.getString("ownerName"),
                 rs.getString("reportDesc"),
                 rs.getTimestamp("reportDate"),
                 rs.getString("notes"));
